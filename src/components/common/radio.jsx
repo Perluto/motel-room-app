@@ -2,8 +2,8 @@ import React from "react";
 
 const Radio = ({ name, label, options, error, ...rest }) => {
   let data = [
-    { d: true, name: "Yes" },
-    { d: false, name: "No" },
+    { name: "Yes", value: true },
+    { d: false, value: false },
   ];
 
   if (options === null) {
@@ -11,16 +11,16 @@ const Radio = ({ name, label, options, error, ...rest }) => {
   }
 
   return (
-    <div class="form-group">
+    <div className="form-group">
       <label>{label}</label>
       {options.map((option, index) => {
         return (
-          <div className="form-check form-check-inline">
+          <div key={index} className="form-check form-check-inline">
             <input
               className="form-check-input"
               type="radio"
+              value={option.value}
               name={name}
-              value="1"
               id={index}
               {...rest}
             />

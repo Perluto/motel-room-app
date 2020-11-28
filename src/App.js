@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import RegisterForm from "./components/RegisterForm";
+import NavBar from "./components/navBar";
 class App extends Component {
   state = {};
   render() {
     return (
       <React.Fragment>
-        <RegisterForm></RegisterForm>
+        <NavBar></NavBar>
       </React.Fragment>
     );
   }

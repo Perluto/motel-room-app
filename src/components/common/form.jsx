@@ -20,11 +20,8 @@ class Form extends Component {
   };
 
   handleChange = ({ currentTarget: input }) => {
-    
-    if(input.type==="radio"){
-      console.log(input);
-      return;
-    }
+    console.log(input);
+
     const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(input);
     if (errorMessage) errors[input.id] = errorMessage;
@@ -34,7 +31,6 @@ class Form extends Component {
     data[input.id] = input.value;
 
     this.setState({ data, errors });
-    
   };
 
   handleSubmit = (e) => {
@@ -47,6 +43,10 @@ class Form extends Component {
     }
 
     this.doSubmit();
+  };
+
+  handleClick = ({ currentTarget: input }) => {
+    console.log(input);
   };
 
   renderBtn = (label) => {
@@ -90,15 +90,14 @@ class Form extends Component {
   };
 
   renderRadio = (name, label, options) => {
-    const { data, errors } = this.state;
+    const { errors } = this.state;
     return (
       <Radio
         name={name}
         label={label}
         options={options}
         error={errors[name]}
-        value={data[name]}
-        onChange={this.handleChange}
+        onClick={this.handleClick}
       ></Radio>
     );
   };
