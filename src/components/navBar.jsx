@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import Dropdown from "./dropdown";
 
 class Navbar extends Component {
   state = {
@@ -8,7 +9,6 @@ class Navbar extends Component {
       owner: [{ label: "", link: "", className: "" }],
       admin: [],
     },
-    isNavCollapsed: true,
     data: null,
   };
 
@@ -16,14 +16,7 @@ class Navbar extends Component {
     this.setState({ data: this.state.options.renter });
   }
 
-  handleNavCollapse = () => {
-    let isNavCollapsed = !this.state.isNavCollapsed;
-    console.log(isNavCollapsed);
-    this.setState({ isNavCollapsed });
-  };
-
   render() {
-    const { isNavCollapsed } = this.state;
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <NavLink className="navbar-brand" to="/">
@@ -35,28 +28,35 @@ class Navbar extends Component {
           data-toggle="collapse"
           data-target="#myNavBar"
           aria-controls="myNavBar"
-          aria-expanded={!isNavCollapsed ? true : false}
+          aria-expanded="false"
           aria-label="Toggle navigation"
-          onClick={this.handleNavCollapse}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div
-          className={`${isNavCollapsed ? "collapse" : ""}  navbar-collapse`}
-          id="myNavBar"
-        >
+        <div className="collapse navbar-collapse" id="myNavBar">
           <div className="navbar-nav">
             <NavLink className="nav-item nav-link" to="/movies">
-              Movies
+              Home
             </NavLink>
             <NavLink className="nav-item nav-link" to="/customers">
-              Customers
+              List of posts
             </NavLink>
             <NavLink className="nav-item nav-link" to="/rentals">
-              Rentals
+              Post
             </NavLink>
-            <NavLink className="nav-item nav-link" to="/profile">
-              <i className="fas fa-user-circle fa-lg"></i>
+          </div>
+          <div className="nav navbar-nav ml-auto justify-content-end">
+            <NavLink
+              className="nav-item nav-link position-relative mr-4"
+              to="/rentals"
+            >
+              <i className="fas fa-bell fa-lg"></i>
+              <span className="position-absolute rounded-circle text-white notification">
+                1
+              </span>
+            </NavLink>
+            <NavLink className="nav-item dropdown mr-1" to="#">
+              <Dropdown></Dropdown>
             </NavLink>
           </div>
         </div>
