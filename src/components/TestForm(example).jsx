@@ -1,7 +1,6 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-
 class RegisterForm extends Form {
   state = {
     data: {
@@ -10,10 +9,10 @@ class RegisterForm extends Form {
     },
     errors: {},
     test: [
-      { _id: 1, name: "1" },
-      { _id: 2, name: "2" },
-      { _id: 3, name: "3" },
-      { _id: 4, name: "4" },
+      { id: 1, value: "1", label: "1" },
+      { id: 2, value: "2", label: "2" },
+      { id: 3, value: "3", label: "3" },
+      { id: 4, value: "4", label: "4" },
     ],
   };
 

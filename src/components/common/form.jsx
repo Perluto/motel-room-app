@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./input";
-import Select from "./select";
 import Radio from "./radio";
+import Select from "react-select";
 
 class Form extends Component {
   validate() {
@@ -20,8 +20,6 @@ class Form extends Component {
   };
 
   handleChange = ({ currentTarget: input }) => {
-    console.log(input);
-
     const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(input);
     if (errorMessage) errors[input.id] = errorMessage;
@@ -29,6 +27,21 @@ class Form extends Component {
 
     const data = { ...this.state.data };
     data[input.id] = input.value;
+
+    this.setState({ data, errors });
+  };
+
+  handleChangeSelect = (option, action) => {
+    console.log(option);
+    const value = option.value;
+    const name = action.name;
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty({ id: name, value: value });
+    if (errorMessage) errors[name] = errorMessage;
+    else delete errors[name];
+
+    const data = { ...this.state.data };
+    data[name] = value;
 
     this.setState({ data, errors });
   };
@@ -53,7 +66,7 @@ class Form extends Component {
     return (
       <button
         disabled={this.validate()}
-        className="btn btn-primary"
+        className="btn btn-primary m-2"
         onClick={this.handleSubmit}
       >
         {label}
@@ -68,7 +81,7 @@ class Form extends Component {
         name={name}
         label={label}
         error={errors}
-        value={data[name]}
+        value={data[name] ? data[name] : null}
         type={type}
         onChange={this.handleChange}
       />
@@ -78,14 +91,19 @@ class Form extends Component {
   renderSelect = (name, label, options) => {
     const { data, errors } = this.state;
     return (
-      <Select
-        name={name}
-        label={label}
-        options={options}
-        error={errors[name]}
-        value={data[name]}
-        onChange={this.handleChange}
-      ></Select>
+      <div>
+        <div>{label}</div>
+        <Select
+          options={options}
+          name={name}
+          defaultValue={data[name]}
+          onChange={this.handleChangeSelect}
+          placeholder={"Select " + label + " ..."}
+        ></Select>
+        {errors[name] && (
+          <div className="alert alert-danger mt-1">{errors[name]}</div>
+        )}
+      </div>
     );
   };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Dropdown = () => {
   return (
@@ -17,15 +17,15 @@ const Dropdown = () => {
         className="dropdown-menu dropdown-menu-right"
         aria-labelledby="myDropdown"
       >
-        <NavLink className="dropdown-item" to="/profile">
-          Profile
-        </NavLink>
-        <NavLink className="dropdown-item" to="/change-password">
-          Chang password
-        </NavLink>
-        <NavLink className="dropdown-item" to="/logout">
-          Logout
-        </NavLink>
+        <div className="dropdown-item">
+          <Link to="/profile">Profile</Link>
+        </div>
+        <div className="dropdown-item">
+          <Link to="/change-password">Chang password</Link>
+        </div>
+        <div className="dropdown-item">
+          <Link to="/logout">Logout</Link>
+        </div>
       </div>
     </React.Fragment>
   );
