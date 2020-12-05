@@ -1,0 +1,22 @@
+.name{
+    background: #f9f9f9;
+}
+.content{
+    width: 70%;
+}
+.table-detail{
+    width: auto!important;
+}
+.des{
+    padding: 10px;
+    border: 1px solid #ddd;
+    width: 623px;
+}
+.slide{
+    width: 77%;
+    margin-top: 20px;
+}
+.ima{
+    width: 621px;
+    height: 400px;
+}
