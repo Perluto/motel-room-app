@@ -6,17 +6,34 @@ class Navbar extends Component {
   state = {
     options: {
       renter: [],
-      owner: [{ label: "", link: "", className: "" }],
+      owner: [
+        { label: "Trang chủ", link: "/home", className: "nav-item nav-link" },
+        { label: "Đăng bài", link: "/post", className: "nav-item nav-link" },
+        {
+          label: "Quản lý bài đăng",
+          link: "/manage-post",
+          className: "nav-item nav-link",
+        },
+        {
+          label: "Quản lý phòng thuê",
+          link: "/manage-room",
+          className: "nav-item nav-link",
+        },
+        {
+          label: " Thông báo",
+          link: "/notification",
+          className: "nav-item nav-link",
+        },
+      ],
       admin: [],
     },
-    data: null,
   };
 
-  componentDidMount() {
-    this.setState({ data: this.state.options.renter });
-  }
+  componentDidMount() {}
 
   render() {
+    const data = this.state.options["owner"];
+
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <NavLink className="navbar-brand" to="/">
@@ -35,20 +52,18 @@ class Navbar extends Component {
         </button>
         <div className="collapse navbar-collapse" id="myNavBar">
           <div className="navbar-nav">
-            <NavLink className="nav-item nav-link" to="/movies">
-              Home
-            </NavLink>
-            <NavLink className="nav-item nav-link" to="/customers">
-              List of posts
-            </NavLink>
-            <NavLink className="nav-item nav-link" to="/rentals">
-              Post
-            </NavLink>
+            {data.map((e, index) => {
+              return (
+                <NavLink key={index} className={e["className"]} to={e["link"]}>
+                  {e["label"]}
+                </NavLink>
+              );
+            })}
           </div>
           <div className="nav navbar-nav ml-auto justify-content-end">
             <NavLink
               className="nav-item nav-link position-relative mr-4"
-              to="/rentals"
+              to="#"
             >
               <i className="fas fa-bell fa-lg"></i>
               <span className="position-absolute rounded-circle text-white notification">

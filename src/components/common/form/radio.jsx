@@ -1,19 +1,15 @@
 import React from "react";
 
-const Radio = ({ name, label, options, error, ...rest }) => {
+const Radio = ({ name, label, error, ...rest }) => {
   let data = [
-    { name: "Yes", value: true },
-    { d: false, value: false },
+    { name: "Có", value: true },
+    { name: "Không", value: false },
   ];
 
-  if (options === null) {
-    options = data;
-  }
-
   return (
-    <div className="form-group">
-      <label>{label}</label>
-      {options.map((option, index) => {
+    <React.Fragment>
+      <label className="mr-3">{label} :</label>
+      {data.map((option, index) => {
         return (
           <div key={index} className="form-check form-check-inline">
             <input
@@ -29,7 +25,7 @@ const Radio = ({ name, label, options, error, ...rest }) => {
         );
       })}
       {error && <div className="alert alert-danger">{error}</div>}
-    </div>
+    </React.Fragment>
   );
 };
 

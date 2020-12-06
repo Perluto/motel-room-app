@@ -13,6 +13,9 @@ class Form extends Component {
   }
 
   validateProperty = ({ id: name, value }) => {
+    const isRequired = this.schema[name]._flags.presence;
+    if (isRequired !== "required") return null;
+
     const obj = { [name]: value };
     const schema = { [name]: this.schema[name] };
     const { error } = Joi.validate(obj, schema);
@@ -32,7 +35,6 @@ class Form extends Component {
   };
 
   handleChangeSelect = (option, action) => {
-    console.log(option);
     const value = option.value;
     const name = action.name;
     const errors = { ...this.state.errors };
@@ -59,7 +61,17 @@ class Form extends Component {
   };
 
   handleClick = ({ currentTarget: input }) => {
-    console.log(input);
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty({
+      id: input.name,
+      value: input.value,
+    });
+    if (errorMessage) errors[input.name] = errorMessage;
+    else delete errors[input.name];
+    const data = { ...this.state.data };
+    data[input.name] = input.value;
+
+    this.setState({ data, errors });
   };
 
   renderBtn = (label) => {
@@ -91,29 +103,28 @@ class Form extends Component {
   renderSelect = (name, label, options) => {
     const { data, errors } = this.state;
     return (
-      <div>
-        <div>{label}</div>
+      <React.Fragment>
+        <div className="mb-2">{label}</div>
         <Select
           options={options}
           name={name}
           defaultValue={data[name]}
           onChange={this.handleChangeSelect}
-          placeholder={"Select " + label + " ..."}
+          placeholder={"Chọn " + label + " ..."}
         ></Select>
         {errors[name] && (
           <div className="alert alert-danger mt-1">{errors[name]}</div>
         )}
-      </div>
+      </React.Fragment>
     );
   };
 
-  renderRadio = (name, label, options) => {
+  renderRadio = (name, label) => {
     const { errors } = this.state;
     return (
       <Radio
         name={name}
         label={label}
-        options={options}
         error={errors[name]}
         onClick={this.handleClick}
       ></Radio>
