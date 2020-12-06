@@ -1,0 +1,24 @@
+.post{
+    display: flex;
+    border: 2px solid red;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+.post1{
+    order: 1;
+    width: 40%;
+}
+.post2{
+    order: 2;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+.post1 a img{
+    width: 100%;
+}
+.my-link{
+    text-decoration: none;
+    color: red!important;
+    
+}
