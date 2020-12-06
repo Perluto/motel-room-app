@@ -5,7 +5,8 @@ class ManagePost extends Component {
   render() {
     return (
       <div>
-        <h3 className="text-primary">Quản lý bài đăng</h3>
+        <h3 className="text-primary m-1">Quản lý bài đăng</h3>
+        <div className="container"></div>
       </div>
     );
   }

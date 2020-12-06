@@ -1,9 +1,13 @@
 import React, { Component } from "react";
-import NavBar from "./components/navBar";
-import PostResForm from "./components/postResForm/postResForm.jsx";
-import PostShortCut from "./components/postShortcut";
 import { Switch, Route } from "react-router-dom";
-import postDetail from "./components/postDetail";
+
+import NavBar from "./components/navBar";
+
+import PostResForm from "./components/postResForm/postResForm.jsx";
+import PostShortCut from "./components/postForm/postShortcut";
+import PostDetail from "./components/postForm/postDetail";
+import ManagePost from "./page/owner/managePost";
+
 class App extends Component {
   state = {};
   render() {
@@ -14,7 +18,8 @@ class App extends Component {
           <Switch>
             <Route path="/postForm" component={PostResForm}></Route>
             <Route path="/postShortcut" component={PostShortCut}></Route>
-            <Route path="/postDetail" component={postDetail}></Route>
+            <Route path="/postDetail" component={PostDetail}></Route>
+            <Route path="/manage-post" component={ManagePost}></Route>
           </Switch>
         </main>
       </React.Fragment>

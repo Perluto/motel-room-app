@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Image1 from "../image/teamb1.png";
-import Image2 from "../image/teamb2.jpg";
-import Image3 from "../image/teamb3.jpg";
+import Image1 from "../../image/teamb1.png";
+import Image2 from "../../image/teamb2.jpg";
+import Image3 from "../../image/teamb3.jpg";
 class postShortcut extends Component {
   state = {
     content: [
