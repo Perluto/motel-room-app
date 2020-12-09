@@ -5,9 +5,7 @@ const Input = ({ name, label, error, ...rest }) => {
     <React.Fragment>
       <label htmlFor={name}>{label}</label>
       <input className="form-control" id={name} {...rest} />
-      {error[name] && (
-        <div className="alert alert-danger mt-1">{error[name]}</div>
-      )}
+      {error[name] && <div className="invalid">{error[name]}!</div>}
     </React.Fragment>
   );
 };

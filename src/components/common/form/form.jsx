@@ -112,9 +112,7 @@ class Form extends Component {
           onChange={this.handleChangeSelect}
           placeholder={"Chọn " + label + " ..."}
         ></Select>
-        {errors[name] && (
-          <div className="alert alert-danger mt-1">{errors[name]}</div>
-        )}
+        {errors[name] && <div className="invalid">{errors[name]}!</div>}
       </React.Fragment>
     );
   };

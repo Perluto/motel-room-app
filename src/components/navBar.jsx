@@ -8,7 +8,7 @@ class Navbar extends Component {
       renter: [],
       owner: [
         { label: "Trang chủ", link: "/home", className: "nav-item nav-link" },
-        { label: "Đăng bài", link: "/post", className: "nav-item nav-link" },
+        { label: "Đăng bài", link: "/create-post", className: "nav-item nav-link" },
         {
           label: "Quản lý bài đăng",
           link: "/manage-post",

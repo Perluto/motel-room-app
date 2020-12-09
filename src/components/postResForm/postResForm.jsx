@@ -7,10 +7,10 @@ import InfoOwner from "./infoOwner";
 class PostForm extends Form {
   state = {
     data: {
-      id_duong_ref: "",
-      id_quan_ref: "",
+      id_ward_ref: "",
+      id_district_ref: "",
       id_city_ref: "",
-      phuong: "",
+      street: "",
       number: "",
       id_room_type_ref: "",
       id_user: "",
@@ -40,10 +40,10 @@ class PostForm extends Form {
   };
 
   schema = {
-    id_duong_ref: Joi.string().required().label("Đường"),
-    id_quan_ref: Joi.string().required().label("Quận"),
+    id_ward_ref: Joi.string().required().label("Phường"),
+    id_district_ref: Joi.string().required().label("Quận"),
     id_city_ref: Joi.string().required().label("Thành phố"),
-    phuong: Joi.string().required().label("Phường"),
+    street: Joi.string().required().label("Đường"),
     number: Joi.string().required().label("Số nhà"),
     id_room_type_ref: Joi.string().required().label("Loại phòng"),
     related_area: Joi.string().label("Các nơi liên quan"),
@@ -86,16 +86,16 @@ class PostForm extends Form {
               <input type="text" className="form-control" id="district"></input>
             </div>
             <div className="form-group col-md-3">
-              <label htmlFor="street">
-                Duong/Thon <span className="text-danger">(*)</span>
-              </label>
-              <input type="text" className="form-control" id="street"></input>
-            </div>
-            <div className="form-group col-md-3">
               <label htmlFor="ward">
                 Phuong/Xa <span className="text-danger">(*)</span>
               </label>
               <input type="text" className="form-control" id="ward"></input>
+            </div>
+            <div className="form-group col-md-3">
+              <label htmlFor="street">
+                Duong/Thon <span className="text-danger">(*)</span>
+              </label>
+              <input type="text" className="form-control" id="street"></input>
             </div>
             <div className="form-group col-md-2">
               {this.renderInput("number", "Số nhà", "text")}

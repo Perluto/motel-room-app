@@ -24,7 +24,7 @@ const Radio = ({ name, label, error, ...rest }) => {
           </div>
         );
       })}
-      {error && <div className="alert alert-danger">{error}</div>}
+      {error && <div className="invalid">{error}!</div>}
     </React.Fragment>
   );
 };

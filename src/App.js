@@ -3,7 +3,9 @@ import { Switch, Route } from "react-router-dom";
 
 import NavBar from "./components/navBar";
 
-import PostResForm from "./components/postResForm/postResForm.jsx";
+import Home from "./page/renter/home";
+
+import CreatePost from "./page/owner/createPost";
 import PostShortCut from "./components/postForm/postShortcut";
 import PostDetail from "./components/postForm/postDetail";
 import ManagePost from "./page/owner/managePost";
@@ -14,12 +16,12 @@ class App extends Component {
     return (
       <React.Fragment>
         <NavBar></NavBar>
-        <main className="container">
+        <main>
           <Switch>
-            <Route path="/postForm" component={PostResForm}></Route>
-            <Route path="/postShortcut" component={PostShortCut}></Route>
-            <Route path="/postDetail" component={PostDetail}></Route>
+            <Route path="/create-post" component={CreatePost}></Route>
+            <Route path="/post/" component={PostDetail}></Route>
             <Route path="/manage-post" component={ManagePost}></Route>
+            <Route path="/" component={Home}></Route>
           </Switch>
         </main>
       </React.Fragment>
