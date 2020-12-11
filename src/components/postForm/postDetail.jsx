@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PostStatus from "./postStatus";
+import PostComment from "./postComment";
+import Slide from "../common/slide"
 import Image1 from "../../image/teamb1.png";
 import Image2 from "../../image/teamb2.jpg";
 import Image3 from "../../image/teamb3.jpg";
@@ -13,16 +15,14 @@ class PostDetail extends Component {
     acreage: 18,
     expiration: "06/12/20",
     update: "01/12/20",
-    image3: Image3,
-    image1: Image1,
-    image2: Image2,
+    images: [Image1,Image2,Image3]
   };
 
   render() {
     return (
       <div className="container">
         <PostStatus></PostStatus>
-        <div id="common" className="mt-5">
+        <div id="common" className="mt-5 p-3 my-3 border">
           <table className="table table-bordered w-75">
             <tbody>
               <tr>
@@ -57,9 +57,11 @@ class PostDetail extends Component {
           </table>
         </div>
         <div id="details" className="border rounded p-2 w-75 mb-2">
-          <h5 class="text-info">Thông tin mô tả</h5>
+          <h5 className="text-info">Thông tin mô tả</h5>
           <div></div>
         </div>
+        <Slide images={this.state.images}></Slide>
+        <PostComment></PostComment>
       </div>
     );
   }

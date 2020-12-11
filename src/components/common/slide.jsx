@@ -13,25 +13,25 @@ class Slide extends Component {
             <li data-target="#slide" data-slide-to="2"></li>
           </ul>
 
-          <div class="carousel-inner">
+          <div class="carousel-inner bg-dark">
             <div class="carousel-item active">
               <img
-                src={this.state.image1}
-                className="d-block w-100"
+                src={this.props.images[0]}
+                className="d-block w-50 mx-auto"
                 alt="Image1"
               />
             </div>
             <div class="carousel-item">
               <img
-                src={this.state.image2}
-                className="d-block w-100"
+                src={this.props.images[1]}
+                className="d-block w-50 mx-auto"
                 alt="Image2"
               />
             </div>
             <div class="carousel-item">
               <img
-                src={this.state.image3}
-                className="d-block w-100"
+                src={this.props.images[2]}
+                className="d-block w-50 mx-auto"
                 alt="Image3"
               />
             </div>
