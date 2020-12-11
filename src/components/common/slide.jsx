@@ -4,49 +4,55 @@ class Slide extends Component {
   state = { data: "", label: "", className: "" };
   render() {
     return (
-      <div className="w-75">
-        <h5 class="text-info">Hinh anh</h5>
-        <div id="slide" class="carousel slide" data-ride="carousel">
-          <ul class="carousel-indicators">
-            <li data-target="#slide" data-slide-to="0" class="active"></li>
+      <React.Fragment>
+        <h5 className="text-info">Hinh anh</h5>
+        <div id="slide" className="carousel slide" data-ride="carousel">
+          <ul className="carousel-indicators">
+            <li data-target="#slide" data-slide-to="0" className="active"></li>
             <li data-target="#slide" data-slide-to="1"></li>
             <li data-target="#slide" data-slide-to="2"></li>
           </ul>
 
-          <div class="carousel-inner">
-            <div class="carousel-item active">
+          <div className="carousel-inner bg-secondary">
+            <div className="carousel-item active">
               <img
-                src={this.state.image1}
-                className="d-block w-100"
+                src={this.props.images[0]}
+                className="d-block w-50 mx-auto"
                 alt="Image1"
               />
             </div>
-            <div class="carousel-item">
+            <div className="carousel-item">
               <img
-                src={this.state.image2}
-                className="d-block w-100"
+                src={this.props.images[1]}
+                className="d-block w-50 mx-auto"
                 alt="Image2"
               />
             </div>
-            <div class="carousel-item">
+            <div className="carousel-item">
               <img
-                src={this.state.image3}
-                className="d-block w-100"
+                src={this.props.images[2]}
+                className="d-block w-50 mx-auto"
                 alt="Image3"
               />
             </div>
           </div>
 
-          <a class="carousel-control-prev" href="#slide" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
+          <a className="carousel-control-prev" href="#slide" data-slide="prev">
+            <span
+              className="carousel-control-prev-icon"
+              aria-hidden="true"
+            ></span>
+            <span className="sr-only">Previous</span>
           </a>
-          <a class="carousel-control-next" href="#slide" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
+          <a className="carousel-control-next" href="#slide" data-slide="next">
+            <span
+              className="carousel-control-next-icon"
+              aria-hidden="true"
+            ></span>
+            <span className="sr-only">Next</span>
           </a>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

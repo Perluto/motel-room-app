@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PostStatus from "./postStatus";
+import PostComment from "./postComment";
+import Slide from "../common/slide";
 import Image1 from "../../image/teamb1.png";
 import Image2 from "../../image/teamb2.jpg";
 import Image3 from "../../image/teamb3.jpg";
@@ -13,17 +15,21 @@ class PostDetail extends Component {
     acreage: 18,
     expiration: "06/12/20",
     update: "01/12/20",
-    image3: Image3,
-    image1: Image1,
-    image2: Image2,
+    images: [Image1, Image2, Image3],
   };
 
   render() {
     return (
       <div className="container">
-        <PostStatus></PostStatus>
-        <div id="common" className="mt-5">
-          <table className="table table-bordered w-75">
+        <div className="w-100 p-1"></div>
+        <div className="w-50 bg-white border rounded p-4 ml-5 mt-5">
+          <PostStatus></PostStatus>
+        </div>
+        <div
+          id="common"
+          className="w-100 mt-5 mb-4 bg-white p-4 border rounded"
+        >
+          <table className="table table-bordered w-100">
             <tbody>
               <tr>
                 <td className="bg-light">Địa chỉ:</td>
@@ -56,10 +62,17 @@ class PostDetail extends Component {
             </tbody>
           </table>
         </div>
-        <div id="details" className="border rounded p-2 w-75 mb-2">
-          <h5 class="text-info">Thông tin mô tả</h5>
+        <div id="details" className=" w-100 bg-white border rounded p-3 mb-4">
+          <h5 className="text-info">Thông tin mô tả</h5>
           <div></div>
         </div>
+        <div className="w-100 bg-white border rounded p-3 mb-5">
+          <Slide images={this.state.images}></Slide>
+        </div>
+        <div className="bg-white border rounded p-2 w-75 mb-5">
+          <PostComment></PostComment>
+        </div>
+        <div className="w-100 p-1"></div>
       </div>
     );
   }

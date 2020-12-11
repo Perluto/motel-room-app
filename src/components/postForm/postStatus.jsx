@@ -2,7 +2,7 @@ import React from "react";
 
 const PostStatus = () => {
   return (
-    <div className="border border-danger rounded p-4 w-50 ml-5">
+    <React.Fragment>
       <h4 className="text-info">Status</h4>
       <div className=" d-flex flex-column">
         <div className="d-flex justify-content-between mb-1">
@@ -20,11 +20,11 @@ const PostStatus = () => {
         <div className="mb-1">Date Posted</div>
         <div className="mb-1">Date Due</div>
         <div className=" d-flex justify-content-between">
-          <button className="btn btn-primary">Change</button>
-          <button className="btn btn-primary">Gia han</button>
+          <button className="btn btn-outline-primary">Change</button>
+          <button className="btn btn-outline-primary">Gia han</button>
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 

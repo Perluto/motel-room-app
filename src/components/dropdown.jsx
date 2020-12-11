@@ -11,7 +11,7 @@ const Dropdown = () => {
         aria-haspopup="true"
         aria-expanded="false"
       >
-        <i className="fas fa-user-circle fa-lg"></i>
+        <i className="fas fa-user-circle fa-lg text-light"></i>
       </div>
       <div
         className="dropdown-menu dropdown-menu-right"

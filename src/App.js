@@ -8,14 +8,13 @@ import Home from "./page/renter/home";
 import CreatePost from "./page/owner/createPost";
 import PostDetail from "./components/postForm/postDetail";
 import ManagePost from "./page/owner/managePost";
-
 class App extends Component {
   state = {};
   render() {
     return (
       <React.Fragment>
         <NavBar></NavBar>
-        <main>
+        <main className="bg-light">
           <Switch>
             <Route path="/create-post" component={CreatePost}></Route>
             <Route path="/post" component={PostDetail}></Route>

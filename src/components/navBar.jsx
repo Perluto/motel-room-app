@@ -8,7 +8,11 @@ class Navbar extends Component {
       renter: [],
       owner: [
         { label: "Trang chủ", link: "/home", className: "nav-item nav-link" },
-        { label: "Đăng bài", link: "/create-post", className: "nav-item nav-link" },
+        {
+          label: "Đăng bài",
+          link: "/create-post",
+          className: "nav-item nav-link",
+        },
         {
           label: "Quản lý bài đăng",
           link: "/manage-post",
@@ -35,7 +39,7 @@ class Navbar extends Component {
     const data = this.state.options["owner"];
 
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
         <NavLink className="navbar-brand" to="/">
           Phong Tro
         </NavLink>
