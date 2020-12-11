@@ -59,15 +59,12 @@ class postShortcut extends Component {
         <div className="col-sm-6 mb-4">
           <div className="d-flex flex-row border border-danger p-2">
             <div className="w-50">
-              <Link to="/postDetail">
+              <Link to="/post">
                 <img src={content.image1} className="d-block w-100" alt="" />
               </Link>
             </div>
             <div className="w-50 container d-flex flex-column">
-              <Link
-                className="text-danger text-decoration-none"
-                to="/postDetail"
-              >
+              <Link className="text-danger text-decoration-none" to="/post">
                 {content.title}
               </Link>
               <strong>{content.price} triệu/tháng</strong>
