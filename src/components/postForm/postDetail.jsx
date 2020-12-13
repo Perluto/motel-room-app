@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PostStatus from "./postStatus";
 import PostComment from "./postComment";
 import Slide from "../common/slide";
+import Report from "../common/report";
 import Image1 from "../../image/teamb1.png";
 import Image2 from "../../image/teamb2.jpg";
 import Image3 from "../../image/teamb3.jpg";
@@ -27,9 +28,9 @@ class PostDetail extends Component {
         </div>
         <div
           id="common"
-          className="w-100 mt-5 mb-4 bg-white p-4 border rounded"
+          className="w-100 mt-5 mb-5 bg-white p-4 border rounded d-inline-flex"
         >
-          <table className="table table-bordered w-100">
+          <table className="table table-bordered w-100 p-4">
             <tbody>
               <tr>
                 <td className="bg-light">Địa chỉ:</td>
@@ -60,8 +61,18 @@ class PostDetail extends Component {
                 <td className="w-75">{this.state.expiration}</td>
               </tr>
             </tbody>
-          </table>
+          </table>       
+          <div className="align-middle btn-group-vertical">
+            <button className="btn btn-outline-primary">
+              <i className="fas fa-thumbs-up"></i> Like
+            </button>
+            <button className="btn btn-outline-primary" type="button">
+              <i className="fas fa-heart"></i>Follow
+            </button>
+            <Report></Report>
+          </div>
         </div>
+      
         <div id="details" className=" w-100 bg-white border rounded p-3 mb-4">
           <h5 className="text-info">Thông tin mô tả</h5>
           <div></div>
