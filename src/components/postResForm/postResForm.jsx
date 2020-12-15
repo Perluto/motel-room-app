@@ -7,26 +7,26 @@ import InfoOwner from "./infoOwner";
 class PostForm extends Form {
   state = {
     data: {
-      id_ward_ref: "",
-      id_district_ref: "",
-      id_city_ref: "",
+      idWardRef: "",
+      idDistrictRef: "",
+      idCityRef: "",
       street: "",
       number: "",
-      id_room_type_ref: "",
-      id_user: "",
-      related_area: "",
-      room_number: "",
+      idRoomTypeRef: "",
+      idUser: "",
+      relatedArea: "",
+      roomNumber: "",
       price: "",
       area: "",
       status: "",
       isWithOwner: "",
       bathroom: "",
       kitchen: "",
-      water_heater: "",
-      air_condition: "",
+      waterHeater: "",
+      airCondition: "",
       balcony: "",
-      electricity_price: "",
-      water_price: "",
+      electricityPrice: "",
+      waterPrice: "",
       other: "",
       image: [],
     },
@@ -63,14 +63,10 @@ class PostForm extends Form {
 
   doSubmit = async () => {};
 
-  updateData(data) {
-    this.setState({ data });
-  }
-
   render() {
     return (
-      <div>
-        <div className="border border-info rounded p-4 mt-4">
+      <div className="container pt-5">
+        <div className="border border-info rounded p-4 bg-white shadow">
           <h5 className="card-title text-info">Thông tin phòng trọ</h5>
           <div className="form-row ml-1">
             <div className="form-group col-md-3">
@@ -102,7 +98,7 @@ class PostForm extends Form {
             </div>
             <div className="form-group col-md-7">
               {this.renderInput(
-                "related_area",
+                "relatedArea",
                 "Gần những đia điểm công cộng",
                 "text"
               )}
@@ -110,13 +106,13 @@ class PostForm extends Form {
             <div className="form-group col-md-3"></div>
             <div className="form-group col-md-3">
               {this.renderSelect(
-                "id_room_type_ref",
+                "idRoomTypeRef",
                 "Loại phòng",
                 this.state.roomType
               )}
             </div>
             <div className="form-group col-md-1">
-              {this.renderInput("room_number", "Số phòng", "text")}
+              {this.renderInput("roomNumber", "Số phòng", "text")}
             </div>
             <div className="form-group col-md-2">
               {this.renderInput("area", "Diện tích", "number")}
@@ -137,19 +133,19 @@ class PostForm extends Form {
             </div>
             <div className="form-group col-md-3">
               {this.renderInput(
-                "electricity_price",
+                "electricityPrice",
                 "Giá điện (kW/h)",
                 "number"
               )}
             </div>
             <div className="form-group col-md-3">
-              {this.renderInput("water_price", "Giá nước (m3)", "number")}
+              {this.renderInput("waterPrice", "Giá nước (m3)", "number")}
             </div>
             <div className="form-group col-md-12">
-              {this.renderRadio("water_heater", "Bình nóng lạnh")}
+              {this.renderRadio("waterHeater", "Bình nóng lạnh")}
             </div>
             <div className="form-group col-md-12">
-              {this.renderRadio("air_condition", "Điều hòa")}
+              {this.renderRadio("airCondition", "Điều hòa")}
             </div>
             <div className="form-group col-md-12">
               {this.renderRadio("balcony", "Ban công")}

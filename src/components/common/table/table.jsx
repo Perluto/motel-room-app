@@ -1,17 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import TableHeader from "./tableHeader";
 import TableBody from "./tableBody";
 
-class Table extends Component {
-  state = {};
-  render() {
-    return (
-      <table className="table">
-        <TableHeader />
-        <TableBody />
-      </table>
-    );
-  }
-}
+const Table = (props) => {
+  const { data, column } = props;
+  return (
+    <table className="table table-bordered shadow-sm bg-white text-center">
+      <TableHeader column={column} />
+      <TableBody data={data} column={column} />
+    </table>
+  );
+};
 
 export default Table;

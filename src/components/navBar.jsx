@@ -39,7 +39,7 @@ class Navbar extends Component {
     const data = this.state.options["owner"];
 
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow">
         <NavLink className="navbar-brand" to="/">
           Phong Tro
         </NavLink>

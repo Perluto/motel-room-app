@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Image1 from "../../image/teamb1.png";
 import "../../style/comment.css";
 import StarRating from "../common/rating/StarRating";
-
 class PostComment extends Component {
   state = {
     comment: [
@@ -51,7 +50,7 @@ class PostComment extends Component {
           <div>
             <div className="d-flex ml-1">
               <h5 className="mr-2">
-                <strong >{comment.name}</strong>
+                <strong>{comment.name}</strong>
               </h5>
               <small className="pt-1">{this.renderRating(comment.star)}</small>
             </div>

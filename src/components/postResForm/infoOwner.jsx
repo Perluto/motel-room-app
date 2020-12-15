@@ -2,7 +2,7 @@ import React from "react";
 
 const InfoOwner = () => {
   return (
-    <div className="border border-info rounded p-4 mt-4">
+    <div className="border border-info rounded p-4 mt-4 mb-2 bg-white shadow">
       <h5 className="card-title text-info">Thông tin liên lạc</h5>
       <div className="form-row ml-1">
         <div className="col">

@@ -23,7 +23,7 @@ class Search extends Component {
 
   render() {
     return (
-      <div className="border rounded p-1 border-primary">
+      <div className="h-50 border border-light rounded p-3 bg-white shadow">
         <h4>
           <strong className="text-primary">Bộ lọc</strong>
         </h4>

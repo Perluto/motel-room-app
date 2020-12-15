@@ -6,6 +6,7 @@ import Report from "../common/report";
 import Image1 from "../../image/teamb1.png";
 import Image2 from "../../image/teamb2.jpg";
 import Image3 from "../../image/teamb3.jpg";
+import Reaction from "../common/reaction";
 
 class PostDetail extends Component {
   state = {
@@ -28,7 +29,7 @@ class PostDetail extends Component {
         </div>
         <div
           id="common"
-          className="w-100 mt-5 mb-5 bg-white p-4 border rounded d-inline-flex"
+          className="w-100 mt-5 mb-5 bg-white p-4 border rounded d-flex flex-column"
         >
           <table className="table table-bordered w-100 p-4">
             <tbody>
@@ -61,23 +62,19 @@ class PostDetail extends Component {
                 <td className="w-75">{this.state.expiration}</td>
               </tr>
             </tbody>
-          </table>       
-          <div className="align-middle btn-group-vertical">
-            <button className="btn btn-outline-primary">
-              <i className="fas fa-thumbs-up"></i> Like
-            </button>
-            <button className="btn btn-outline-primary" type="button">
-              <i className="fas fa-heart"></i>Follow
-            </button>
+          </table>
+          <div className="d-flex block">
+            <Reaction className="fa-thumbs-up fa-lg text-primary rounded mr-5 p-3 btn-light"></Reaction>
+            <Reaction className="fa-heart fa-lg text-danger rounded mr-5 p-3 btn-light"></Reaction>
             <Report></Report>
           </div>
         </div>
-      
+
         <div id="details" className=" w-100 bg-white border rounded p-3 mb-4">
           <h5 className="text-info">Thông tin mô tả</h5>
           <div></div>
         </div>
-        <div className="w-100 bg-white border rounded p-3 mb-5">
+        <div id="images" className="w-100 bg-white border rounded p-3 mb-5">
           <Slide images={this.state.images}></Slide>
         </div>
         <div className="bg-white border rounded p-2 w-75 mb-5">
