@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Dropdown = () => {
+const Dropdown = ({ icon, data }) => {
   return (
     <React.Fragment>
       <div
@@ -11,21 +11,19 @@ const Dropdown = () => {
         aria-haspopup="true"
         aria-expanded="false"
       >
-        <i className="fas fa-user-circle fa-lg text-light"></i>
+        <i className={icon}></i>
       </div>
       <div
         className="dropdown-menu dropdown-menu-right"
         aria-labelledby="myDropdown"
       >
-        <div className="dropdown-item">
-          <Link to="/profile">Profile</Link>
-        </div>
-        <div className="dropdown-item">
-          <Link to="/change-password">Chang password</Link>
-        </div>
-        <div className="dropdown-item">
-          <Link to="/logout">Logout</Link>
-        </div>
+        {data.map((e, index) => {
+          return (
+            <div className={"dropdown-item" + e.className}>
+              <Link to={e.path}>{e.label}</Link>
+            </div>
+          );
+        })}
       </div>
     </React.Fragment>
   );

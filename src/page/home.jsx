@@ -44,7 +44,9 @@ class Home extends Component {
       },
     ],
   };
+
   render() {
+    console.log(this.props);
     return (
       <div className="d-flex flex-column">
         <div className="d-flex pt-5">

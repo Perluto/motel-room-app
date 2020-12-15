@@ -1,6 +1,6 @@
 import React from "react";
 
-const Radio = ({ name, label, error, ...rest }) => {
+const Radio = ({ name, label, error, value, isDisabled, ...rest }) => {
   let data = [
     { name: "Có", value: true },
     { name: "Không", value: false },
@@ -16,8 +16,10 @@ const Radio = ({ name, label, error, ...rest }) => {
               className="form-check-input"
               type="radio"
               value={option.value}
+              checked={option.value === value ? true : null}
               name={name}
               id={index}
+              disabled={isDisabled ? true : false}
               {...rest}
             />
             <label className="form-check-label">{option.name}</label>

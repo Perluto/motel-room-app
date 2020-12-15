@@ -78,7 +78,7 @@ class Form extends Component {
     return (
       <button
         disabled={this.validate()}
-        className="btn btn-primary m-2"
+        className="btn btn-primary ml-2 mt-4"
         onClick={this.handleSubmit}
       >
         {label}
@@ -86,7 +86,7 @@ class Form extends Component {
     );
   };
 
-  renderInput = (name, label, type) => {
+  renderInput = (name, label, type, disabled = false) => {
     const { data, errors } = this.state;
     return (
       <Input
@@ -96,16 +96,18 @@ class Form extends Component {
         value={data[name] ? data[name] : null}
         type={type}
         onChange={this.handleChange}
+        isDisabled={disabled}
       />
     );
   };
 
-  renderSelect = (name, label, options) => {
+  renderSelect = (name, label, options, disabled = false) => {
     const { data, errors } = this.state;
     return (
       <React.Fragment>
         <div className="mb-2">{label}</div>
         <Select
+          isDisabled={disabled}
           options={options}
           name={name}
           defaultValue={data[name]}
@@ -117,14 +119,16 @@ class Form extends Component {
     );
   };
 
-  renderRadio = (name, label) => {
-    const { errors } = this.state;
+  renderRadio = (name, label, disabled = false) => {
+    const { data, errors } = this.state;
     return (
       <Radio
+        value={data[name] ? data[name] : null}
         name={name}
         label={label}
         error={errors[name]}
         onClick={this.handleClick}
+        isDisabled={disabled}
       ></Radio>
     );
   };

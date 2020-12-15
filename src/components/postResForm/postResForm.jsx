@@ -40,24 +40,24 @@ class PostForm extends Form {
   };
 
   schema = {
-    id_ward_ref: Joi.string().required().label("Phường"),
-    id_district_ref: Joi.string().required().label("Quận"),
-    id_city_ref: Joi.string().required().label("Thành phố"),
+    idWardRef: Joi.string().required().label("Phường"),
+    idDistrictRef: Joi.string().required().label("Quận"),
+    idCityRef: Joi.string().required().label("Thành phố"),
     street: Joi.string().required().label("Đường"),
     number: Joi.string().required().label("Số nhà"),
-    id_room_type_ref: Joi.string().required().label("Loại phòng"),
-    related_area: Joi.string().label("Các nơi liên quan"),
-    room_number: Joi.number().min(1).required().label("Số phòng"),
+    idRoomTypeRef: Joi.string().required().label("Loại phòng"),
+    relatedArea: Joi.string().label("Các nơi liên quan"),
+    roomNumber: Joi.number().min(1).required().label("Số phòng"),
     price: Joi.number().min(0).required().label("Giá phòng"),
     area: Joi.number().min(10).required().label("Diện tích"),
     isWithOwner: Joi.boolean().required().label("Chung chủ"),
     bathroom: Joi.string().required().label("Phòng tắm"),
     kitchen: Joi.string().required().label("Phòng bếp"),
-    air_condition: Joi.boolean().required().label("Điều hòa"),
-    water_heater: Joi.boolean().required().label("Bình nóng lạnh"),
+    airCondition: Joi.boolean().required().label("Điều hòa"),
+    waterHeater: Joi.boolean().required().label("Bình nóng lạnh"),
     balcony: Joi.boolean().required().label("Ban công"),
-    electricity_price: Joi.number().min(0).required().label("Giá điện"),
-    water_price: Joi.number().min(0).required().label("Giá điện"),
+    electricityPrice: Joi.number().min(0).required().label("Giá điện"),
+    waterPrice: Joi.number().min(0).required().label("Giá điện"),
     other: Joi.string().label("Tiện ích khác"),
   };
 
@@ -160,7 +160,7 @@ class PostForm extends Form {
               <input
                 type="file"
                 className="form-control-file"
-                id="exampleFormControlFile1"
+                id="file"
                 multiple
               />
             </div>

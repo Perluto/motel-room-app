@@ -8,6 +8,7 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "./style/notification.css";
+import "./style/login.css";
 
 ReactDOM.render(
   <BrowserRouter>
