@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const Reaction = (props) => {
-  const [like, setLike] = useState(true);
+  const [like, setLike] = useState(false);
   let classes = props.className;
   if (!like) classes += " far";
   else classes += " fas";

@@ -11,6 +11,7 @@ import ManageRoom from "./page/manageRoom";
 import Login from "./page/login";
 import UserResFrom from "./page/register";
 import RegisterForm from "./page/register";
+import Notify from "./components/notify";
 class App extends Component {
   state = {};
   render() {
@@ -27,7 +28,8 @@ class App extends Component {
             <Route path="/posts" component={PostDetail}></Route>
             <Route path="/manage-post" component={ManagePost}></Route>
             <Route path="/manage-room" component={ManageRoom}></Route>
-            <Route path="/notifications/:id" component={ManagePost}></Route>
+            <Route path="/notifications/:id" component={Notify}></Route>
+            <Route path="/notifications" component={Notify}></Route>
             <Route path="/" component={Home}></Route>
           </Switch>
         </main>

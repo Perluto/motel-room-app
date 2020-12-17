@@ -1,8 +1,14 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class TableBody extends Component {
   renderCell = (e, col) => {
     if (col.key === "btn") {
+      if(col.check === "post"){
+        return <Link to="/notifications">
+              <button className="btn btn-primary">{col.label}</button>
+            </Link>;
+      }
       return <button className="btn btn-primary">{col.label}</button>;
     }
     return e[col.key];

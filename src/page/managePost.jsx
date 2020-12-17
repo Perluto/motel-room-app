@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Table from "../components/common/table/table";
 import Pagination from "../components/common/pagination";
+// import { post } from "jquery";
 class ManagePost extends Component {
   state = {
     column: [
@@ -8,7 +9,7 @@ class ManagePost extends Component {
       { label: "Ngày đăng", key: "postedDate" },
       { label: "Ngày hết hạn", key: "dueDate" },
       { label: "Trạng thái", key: "status" },
-      { label: "Gia hạn", key: "btn" },
+      { label: "Duyệt", key: "btn", check: "post" },
     ],
     data: [
       {
@@ -49,7 +50,7 @@ class ManagePost extends Component {
           <Pagination
             itemTotal={this.state.data.length}
             pageSize={2}
-            currentPage={1}
+            currentPage={this.state.currentPage}
             onPageChange={this.handlePageChange}
           ></Pagination>
         </div>

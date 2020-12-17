@@ -1,7 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "../components/common/form/form";
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 
 class Login extends Form {
   state = { data: { username: "", password: "" }, errors: {} };

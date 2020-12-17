@@ -1,7 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "../common/form/form";
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 import InfoOwner from "./infoOwner";
 
 class PostForm extends Form {

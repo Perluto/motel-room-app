@@ -12,3 +12,23 @@
   font-size: 80%;
   color: #dc3545;
 }
+.notification-box{
+  padding: 10px 0px;
+}
+.head{
+  padding:5px 15px;
+  margin-top: -8px;
+  border-radius: 3px 3px 0px 0px;
+}
+.dropdown-notice{
+  top: 60px;
+  right: 0px;
+  left: unset;
+  height: 430px;
+  width: 460px;
+  box-shadow: 0px 5px 7px -1px #c1c1c1;
+  padding-bottom: 0px;
+  padding: 0px;
+}
+
+
