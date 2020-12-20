@@ -43,7 +43,7 @@ class ManagePost extends Component {
   render() {
     return (
       <div className="pt-4">
-        <h3 className="ml-5 text-dark p-2 mb-3">Quản lý phong thue</h3>
+        <h3 className="ml-5 text-dark p-2 mb-3">Quản lý phòng thuê</h3>
         <div className="container p-3 bg-white shadow rounded">
           <Table column={this.state.column} data={this.state.data}></Table>
           <Pagination

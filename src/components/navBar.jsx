@@ -23,11 +23,11 @@ class Navbar extends Component {
           link: "/manage-room",
           className: "nav-item nav-link",
         },
-        {
-          label: " Thông báo",
-          link: "/notifications",
-          className: "nav-item nav-link",
-        },
+        // {
+        //   label: " Thông báo",
+        //   link: "/notifications",
+        //   className: "nav-item nav-link",
+        // },
       ],
       admin: [],
     },

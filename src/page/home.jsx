@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PostShortcut from "../components/postForm/postShortcut";
 import Search from "../components/common/search";
 import Image1 from "../image/teamb1.png";
+import Pagination from "../components/common/pagination";
 
 class Home extends Component {
   state = {
@@ -43,6 +44,10 @@ class Home extends Component {
         image1: Image1,
       },
     ],
+    currentPage: 1,
+  };
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page });
   };
 
   render() {
@@ -66,6 +71,12 @@ class Home extends Component {
                 <PostShortcut data={this.state.content[0]}></PostShortcut>
                 <PostShortcut data={this.state.content[0]}></PostShortcut>
               </div>
+              <Pagination 
+                itemTotal={this.state.content.length}
+                pageSize={2}
+                currentPage={this.state.currentPage}
+                onPageChange={this.handlePageChange}>
+              </Pagination>
             </div>
           </div>
         </div>

@@ -62,7 +62,7 @@ class Notification extends Component {
           </i>
         </div>
 
-        <div className="dropdown-menu dropdown-menu-right dropdown-notice overflow-auto" aria-labelledby="myDropdown">
+        <div className="dropdown-menu dropdown-menu-right dropdown-notice overflow-auto" id="style-scroll" aria-labelledby="myDropdown">
             <div className="head text-light bg-dark">
               <div className="row">
                 <div className="col-6">
