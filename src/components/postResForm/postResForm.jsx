@@ -1,8 +1,9 @@
 import React from "react";
-import Joi from "joi-browser";
 import Form from "../common/form/form";
 import { Redirect } from "react-router-dom";
 import InfoOwner from "./infoOwner";
+import { changeImgToBase64 } from "../../utils/changeImageToBase64";
+import Joi from "joi-browser";
 
 import {
   schemaPostForm,
@@ -44,7 +45,7 @@ class PostForm extends Form {
       electricityPrice: "",
       waterPrice: "",
       other: "",
-      image: [1, 2, 3],
+      image: [],
       postName: "",
       duration: null,
       period: "",
@@ -66,6 +67,7 @@ class PostForm extends Form {
 
   doSubmit = async () => {
     const { data } = this.state;
+
     const user = auth.getCurrentUser();
     const address = {
       idWardRef: data.idWardRef,
@@ -114,7 +116,9 @@ class PostForm extends Form {
         };
         return postService.addPost(post);
       })
-      .then((res) => {})
+      .then((res) => {
+        console.log(res);
+      })
       .catch((err) => {});
   };
 
@@ -253,14 +257,7 @@ class PostForm extends Form {
           </div>
           <h6 className="card-title text-info">Hình ảnh</h6>
           <div className="form-row ml-1">
-            <div className="form-group">
-              <input
-                type="file"
-                className="form-control-file"
-                id="file"
-                multiple
-              />
-            </div>
+            <div className="form-group">{this.renderInputImage("image")}</div>
           </div>
         </div>
         <div className="border border-info rounded p-4 mt-4 mb-2 bg-white shadow">

@@ -15,7 +15,7 @@ function addFacilities(data) {
   return http.post(apiEndpoint + "/facilities", data);
 }
 
-function getRoom(id) {
+function getRoomById(id) {
   return http.get(apiEndpoint + `/${id}`);
 }
 
@@ -27,6 +27,6 @@ export default {
   getRoomType,
   addFacilities,
   getFacilities,
-  getRoom,
+  getRoomById,
   addRoom,
 };

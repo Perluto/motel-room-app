@@ -3,6 +3,7 @@ import PostShortcut from "../components/postForm/postShortcut";
 import Search from "../components/common/search";
 import Image1 from "../image/teamb1.png";
 import Pagination from "../components/common/pagination";
+import postService from "../service/postService";
 
 class Home extends Component {
   state = {
@@ -46,6 +47,13 @@ class Home extends Component {
     ],
     currentPage: 1,
   };
+
+  componentDidMount() {
+    postService.getAll().then((res) => {
+      console.log(res);
+    });
+  }
+
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
   };
@@ -70,12 +78,12 @@ class Home extends Component {
                 <PostShortcut data={this.state.content[0]}></PostShortcut>
                 <PostShortcut data={this.state.content[0]}></PostShortcut>
               </div>
-              <Pagination 
+              <Pagination
                 itemTotal={this.state.content.length}
                 pageSize={2}
                 currentPage={this.state.currentPage}
-                onPageChange={this.handlePageChange}>
-              </Pagination>
+                onPageChange={this.handlePageChange}
+              ></Pagination>
             </div>
           </div>
         </div>

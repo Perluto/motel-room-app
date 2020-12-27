@@ -20,6 +20,7 @@ export const schemaPostForm = {
   electricityPrice: Joi.number().min(0).required().label("Giá điện"),
   waterPrice: Joi.number().min(0).required().label("Giá điện"),
   other: Joi.string().label("Tiện ích khác"),
+  image: Joi.array().min(1).required().label("Hình ảnh"),
   postName: Joi.string().required().min(20).max(50).label("Tên bài đăng"),
   duration: Joi.number().min(1).required().label("Thời hạn"),
   period: Joi.string().required().label("Chu kỳ"),

@@ -4,6 +4,7 @@ import Input from "./input";
 import Radio from "./radio";
 import Select from "react-select";
 import lodash from "lodash";
+import { changeImgToBase64 } from "../../../utils/changeImageToBase64";
 
 class Form extends Component {
   validate() {
@@ -50,10 +51,27 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
+  handleImage = (e) => {
+    const data = [...e.target.files];
+    let promiseAll = [];
+    data.forEach((ele) => {
+      promiseAll.push(changeImgToBase64(ele));
+    });
+
+    Promise.all(promiseAll).then((res) => {
+      const errors = { ...this.state.errors };
+      const errorMessage = this.validateProperty({ id: "image", value: res });
+      if (errorMessage) errors["image"] = errorMessage;
+      else delete errors["image"];
+      const data = { ...this.state.data };
+      data["image"] = res;
+      this.setState({ data, errors });
+    });
+  };
+
   handleSubmit = (e) => {
     e.preventDefault();
     const errors = this.validate();
-
     if (errors) {
       this.setState({ errors: errors || {} });
       return;
@@ -77,6 +95,7 @@ class Form extends Component {
   };
 
   renderBtn = (label) => {
+    console.log(this.validate())
     return (
       <button
         disabled={this.validate()}
@@ -100,6 +119,22 @@ class Form extends Component {
         onChange={this.handleChange}
         isDisabled={disabled}
       />
+    );
+  };
+
+  renderInputImage = (name) => {
+    const { errors } = this.state;
+    return (
+      <div className="form-group">
+        <input
+          type="file"
+          className="form-control-file"
+          id="file"
+          onChange={this.handleImage}
+          multiple
+        />
+        {errors[name] && <div className="invalid">{errors[name]}!</div>}
+      </div>
     );
   };
 
