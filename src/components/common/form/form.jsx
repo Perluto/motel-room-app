@@ -3,10 +3,12 @@ import Joi from "joi-browser";
 import Input from "./input";
 import Radio from "./radio";
 import Select from "react-select";
+import lodash from "lodash";
 
 class Form extends Component {
   validate() {
-    const { error } = Joi.validate(this.state.data, this.schema, {
+    const data = lodash.pick(this.state.data, Object.keys(this.schema));
+    const { error } = Joi.validate(data, this.schema, {
       abortEarly: false,
     });
     return error ? error.details[0].message : null;
@@ -78,7 +80,7 @@ class Form extends Component {
     return (
       <button
         disabled={this.validate()}
-        className="btn btn-primary ml-2 mt-4"
+        className="btn btn-primary ml-2 mt-2"
         onClick={this.handleSubmit}
       >
         {label}

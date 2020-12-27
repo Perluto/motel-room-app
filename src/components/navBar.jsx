@@ -5,7 +5,14 @@ import Notification from "../page/notification";
 class Navbar extends Component {
   state = {
     options: {
-      renter: [],
+      renter: [
+        { label: "Trang chủ", link: "/home", className: "nav-item nav-link" },
+        {
+          label: "Danh sách yêu thích",
+          link: "/manage-post",
+          className: "nav-item nav-link",
+        },
+      ],
       owner: [
         { label: "Trang chủ", link: "/home", className: "nav-item nav-link" },
         {
@@ -23,14 +30,32 @@ class Navbar extends Component {
           link: "/manage-room",
           className: "nav-item nav-link",
         },
-        // {
-        //   label: " Thông báo",
-        //   link: "/notifications",
-        //   className: "nav-item nav-link",
-        // },
       ],
-      admin: [],
+      admin: [
+        { label: "Trang chủ", link: "/home", className: "nav-item nav-link" },
+        {
+          label: "Đăng bài",
+          link: "/create-post",
+          className: "nav-item nav-link",
+        },
+        {
+          label: "Quản lý bài đăng",
+          link: "/manage-post",
+          className: "nav-item nav-link",
+        },
+        {
+          label: "Quản lý phòng thuê",
+          link: "/manage-room",
+          className: "nav-item nav-link",
+        },
+        {
+          label: "Quản lý chủ nhà trọ",
+          link: "/manage-owner",
+          className: "nav-item nav-link",
+        },
+      ],
     },
+    data: [],
     userDropdown: [
       { path: "/profile", className: "", label: "Profile" },
       { path: "/change-password", className: "", label: "Change Password" },
@@ -38,10 +63,20 @@ class Navbar extends Component {
     ],
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    const { user } = this.props;
+    
+    if (user.isAdmin) {
+      this.setState({ data: this.state.options["admin"] });
+    } else if (user.isOwner) {
+      this.setState({ data: this.state.options["owner"] });
+    } else {
+      this.setState({ data: this.state.options["renter"] });
+    }
+  }
 
   render() {
-    const data = this.state.options["owner"];
+    const { data } = this.state;
 
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow">

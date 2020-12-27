@@ -2,9 +2,14 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "../components/common/form/form";
 
+import addressService from "../service/addressService";
+import userService from "../service/userService";
+import { changeNameProps } from "../utils/changeNameProps";
+import lodash from "lodash";
+
 class RegisterForm extends Form {
   state = {
-    data: { username: "", password: "", role: "" },
+    data: { username: "", password: "", isOwner: "" },
     role: [
       {
         label: "Người thuê trọ",
@@ -17,35 +22,85 @@ class RegisterForm extends Form {
     ],
     disabled: true,
     defaultSchema: {
-      username: Joi.string().required().label("Username"),
-      password: Joi.string().required("Password"),
-      role: Joi.boolean().required("Vai trò"),
+      username: Joi.string().min(6).required().label("Username"),
+      password: Joi.string().min(6).required("Password"),
+      isOwner: Joi.boolean().required("Vai trò"),
     },
+
     ownerSchema: {
-      username: Joi.string().required().label("Username"),
-      password: Joi.string().required("Password"),
-      role: Joi.boolean().required("Vai trò"),
+      username: Joi.string().min(6).required().label("Username"),
+      password: Joi.string().min(6).required("Password"),
+      isOwner: Joi.boolean().required("Vai trò"),
       name: Joi.string().required().label("Name"),
       phone: Joi.string().length(10).required("Phone"),
-      cardId: Joi.string().length(12).required("Card Id"),
-      roomNumber: Joi.string().required("So nha"),
+      cardId: Joi.string().length(10).required("Card Id"),
+      idWardRef: Joi.string().required().label("Phường/Xã"),
+      idDistrictRef: Joi.string().required().label("Quận/Huyện"),
+      idCityRef: Joi.string().required().label("Thành phố/Tỉnh"),
+      street: Joi.string().required().label("Đường"),
+      number: Joi.string().required().label("Số nhà"),
     },
+    city: [],
+    district: [],
+    ward: [],
     errors: {},
   };
 
   schema = this.state.defaultSchema;
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.state.data.role === true) {
+  componentDidMount() {
+    addressService.getCity().then((res) => {
+      let city = changeNameProps(res.data, "_id", "value");
+      city = changeNameProps(city, "name", "label");
+      this.setState({ city });
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.data.isOwner === true) {
       this.schema = this.state.ownerSchema;
       if (this.state.disabled !== false) this.setState({ disabled: false });
     } else {
       this.schema = this.state.defaultSchema;
       if (this.state.disabled !== true) this.setState({ disabled: true });
     }
-    console.log(this.schema);
+
+    const { data } = this.state;
+    if (data.idCityRef && data.idCityRef !== prevState.data.idCityRef) {
+      addressService.getDistrict(data.idCityRef).then((res) => {
+        let district = changeNameProps(res.data, "_id", "value");
+        district = changeNameProps(district, "name", "label");
+        this.setState({ district });
+      });
+    }
+
+    if (
+      data.idDistrictRef &&
+      data.idDistrictRef !== prevState.data.idDistrictRef
+    ) {
+      addressService.getWard(data.idDistrictRef).then((res) => {
+        let data = changeNameProps(res.data, "_id", "value");
+        data = changeNameProps(data, "name", "label");
+        this.setState({ ward: data });
+      });
+    }
   }
-  doSubmit = async () => {};
+
+  doSubmit = () => {
+    const data = lodash.pick(this.state.data, Object.keys(this.schema));
+    userService
+      .addUser(data)
+      .then((res) => {
+        window.location = "/login";
+      })
+      .catch((ex) => {
+        if (ex.response && ex.response.status === 400) {
+          const errors = { ...this.state.errors };
+          errors.username = ex.response.data;
+          this.setState({ errors });
+        }
+      });
+  };
 
   render() {
     const { disabled } = this.state;
@@ -57,7 +112,7 @@ class RegisterForm extends Form {
             <div className="form-group">
               {this.renderInput("username", "Username", "text")}
               {this.renderInput("password", "Password", "password")}
-              {this.renderSelect("role", "Role", this.state.role)}
+              {this.renderSelect("isOwner", "Role", this.state.role)}
               {this.renderBtn("Đăng ký")}
             </div>
           </div>
@@ -80,31 +135,34 @@ class RegisterForm extends Form {
               {this.renderInput("cardId", "Card Id", "text", disabled)}
             </div>
             <div className="form-group col-md-4">
-              <label htmlFor="city">
-                Thanh pho/Tinh <span className="text-danger">(*)</span>
-              </label>
-              <input type="text" className="form-control" id="city"></input>
+              {this.renderSelect(
+                "idCityRef",
+                "Thành phố/Tỉnh",
+                this.state.city,
+                disabled
+              )}
             </div>
             <div className="form-group col-md-4">
-              <label htmlFor="district">
-                Quan/Huyen <span className="text-danger">(*)</span>
-              </label>
-              <input type="text" className="form-control" id="district"></input>
+              {this.renderSelect(
+                "idDistrictRef",
+                "Quận/Huyện",
+                this.state.district,
+                disabled
+              )}
             </div>
             <div className="form-group col-md-4">
-              <label htmlFor="ward">
-                Phuong/Xa <span className="text-danger">(*)</span>
-              </label>
-              <input type="text" className="form-control" id="ward"></input>
+              {this.renderSelect(
+                "idWardRef",
+                "Phường/Xã",
+                this.state.ward,
+                disabled
+              )}
             </div>
             <div className="form-group col-md-4">
-              <label htmlFor="street">
-                Duong/Thon <span className="text-danger">(*)</span>
-              </label>
-              <input type="text" className="form-control" id="street"></input>
+              {this.renderInput("street", "Đường", "text", disabled)}
             </div>
             <div className="form-group col-md-2">
-              {this.renderInput("number", "Số nhà", "text")}
+              {this.renderInput("number", "Số nhà", "text", disabled)}
             </div>
           </div>
         </div>

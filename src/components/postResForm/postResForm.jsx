@@ -1,8 +1,24 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "../common/form/form";
-// import { Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import InfoOwner from "./infoOwner";
+
+import {
+  schemaPostForm,
+  kitchen,
+  bathroom,
+  defaultData,
+  period,
+} from "./schemaPostForm";
+
+import addressService from "../../service/addressService";
+import roomService from "../../service/roomService";
+import postService from "../../service/postService";
+import auth from "../../service/authService";
+
+import { changeNameProps } from "../../utils/changeNameProps";
+import { dateCalculate, formatDate } from "../../utils/dateCalculate";
 
 class PostForm extends Form {
   state = {
@@ -13,7 +29,7 @@ class PostForm extends Form {
       street: "",
       number: "",
       idRoomTypeRef: "",
-      idUser: "",
+      idUserRef: "",
       relatedArea: "",
       roomNumber: "",
       price: "",
@@ -28,40 +44,119 @@ class PostForm extends Form {
       electricityPrice: "",
       waterPrice: "",
       other: "",
-      image: [],
+      image: [1, 2, 3],
+      postName: "",
+      duration: null,
+      period: "",
     },
-    roomType: [
-      { label: "Phòng Trọ", value: "Phòng Trọ" },
-      { label: "Chung Cư Mini", value: "Chung Cư Mini" },
-      { label: "Nhà Nguyên Căn", value: "Nhà Nguyên Căn" },
-      { label: "Chung Cư Nguyên Căn", value: "Chung Cư Nguyên Căn" },
-    ],
+
+    user: null,
+    roomType: [],
+    bathroom: [],
+    kitchen: [],
+    defaultData: [],
+    city: [],
+    district: [],
+    ward: [],
+    period: [],
     errors: {},
   };
 
-  schema = {
-    idWardRef: Joi.string().required().label("Phường"),
-    idDistrictRef: Joi.string().required().label("Quận"),
-    idCityRef: Joi.string().required().label("Thành phố"),
-    street: Joi.string().required().label("Đường"),
-    number: Joi.string().required().label("Số nhà"),
-    idRoomTypeRef: Joi.string().required().label("Loại phòng"),
-    relatedArea: Joi.string().label("Các nơi liên quan"),
-    roomNumber: Joi.number().min(1).required().label("Số phòng"),
-    price: Joi.number().min(0).required().label("Giá phòng"),
-    area: Joi.number().min(10).required().label("Diện tích"),
-    isWithOwner: Joi.boolean().required().label("Chung chủ"),
-    bathroom: Joi.string().required().label("Phòng tắm"),
-    kitchen: Joi.string().required().label("Phòng bếp"),
-    airCondition: Joi.boolean().required().label("Điều hòa"),
-    waterHeater: Joi.boolean().required().label("Bình nóng lạnh"),
-    balcony: Joi.boolean().required().label("Ban công"),
-    electricityPrice: Joi.number().min(0).required().label("Giá điện"),
-    waterPrice: Joi.number().min(0).required().label("Giá điện"),
-    other: Joi.string().label("Tiện ích khác"),
+  schema = schemaPostForm;
+
+  doSubmit = async () => {
+    const { data } = this.state;
+    const user = auth.getCurrentUser();
+    const address = {
+      idWardRef: data.idWardRef,
+      idDistrictRef: data.idDistrictRef,
+      idCityRef: data.idCityRef,
+      street: data.street,
+      number: data.number,
+    };
+
+    const facilities = {
+      bathroom: data.bathroom,
+      kitchen: data.kitchen,
+      waterHeater: data.waterHeater,
+      airCondition: data.airCondition,
+      balcony: data.balcony,
+      electricityPrice: data.electricityPrice,
+      waterPrice: data.waterPrice,
+      other: data.other,
+    };
+
+    Promise.all([
+      addressService.addAddress(address),
+      roomService.addFacilities(facilities),
+    ])
+      .then((res) => {
+        const post = {
+          idAddressRef: res[0].data,
+          idUserRef: user._id,
+          idRoomTypeRef: data.idRoomTypeRef,
+          roomNumber: data.roomNumber,
+          price: data.price,
+          area: data.area,
+          idFacilitiesRef: res[1].data,
+          image: data.image,
+          isWithOwner: data.isWithOwner,
+        };
+        return roomService.addRoom(post);
+      })
+      .then((res) => {
+        const post = {
+          idUserRef: user._id,
+          idRoomRef: res.data,
+          postName: data.postName,
+          postedDate: formatDate(Date.now()),
+          dueDate: formatDate(dateCalculate(data.duration, data.period)),
+        };
+        return postService.addPost(post);
+      })
+      .then((res) => {})
+      .catch((err) => {});
   };
 
-  doSubmit = async () => {};
+  componentDidMount() {
+    this.setState({
+      bathroom: bathroom,
+      kitchen: kitchen,
+      defaultData: defaultData,
+      period: period,
+    });
+
+    addressService.getCity().then((res) => {
+      let city = changeNameProps(res.data, "_id", "value");
+      city = changeNameProps(city, "name", "label");
+      this.setState({ city });
+    });
+
+    roomService.getRoomType().then((res) => {
+      let roomType = changeNameProps(res.data, "_id", "value");
+      roomType = changeNameProps(roomType, "name", "label");
+      this.setState({ roomType });
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { data } = this.state;
+    if (data.idCityRef !== prevState.data.idCityRef) {
+      addressService.getDistrict(data.idCityRef).then((res) => {
+        let district = changeNameProps(res.data, "_id", "value");
+        district = changeNameProps(district, "name", "label");
+        this.setState({ district });
+      });
+    }
+
+    if (data.idDistrictRef !== prevState.data.idDistrictRef) {
+      addressService.getWard(data.idDistrictRef).then((res) => {
+        let data = changeNameProps(res.data, "_id", "value");
+        data = changeNameProps(data, "name", "label");
+        this.setState({ ward: data });
+      });
+    }
+  }
 
   render() {
     return (
@@ -70,28 +165,24 @@ class PostForm extends Form {
           <h5 className="card-title text-info">Thông tin phòng trọ</h5>
           <div className="form-row ml-1">
             <div className="form-group col-md-3">
-              <label htmlFor="city">
-                Thanh pho/Tinh <span className="text-danger">(*)</span>
-              </label>
-              <input type="text" className="form-control" id="city"></input>
+              {this.renderSelect(
+                "idCityRef",
+                "Thành phố/Tỉnh",
+                this.state.city
+              )}
             </div>
             <div className="form-group col-md-3">
-              <label htmlFor="district">
-                Quan/Huyen <span className="text-danger">(*)</span>
-              </label>
-              <input type="text" className="form-control" id="district"></input>
+              {this.renderSelect(
+                "idDistrictRef",
+                "Quận/Huyện",
+                this.state.district
+              )}
             </div>
             <div className="form-group col-md-3">
-              <label htmlFor="ward">
-                Phuong/Xa <span className="text-danger">(*)</span>
-              </label>
-              <input type="text" className="form-control" id="ward"></input>
+              {this.renderSelect("idWardRef", "Phường/Xã", this.state.ward)}
             </div>
             <div className="form-group col-md-3">
-              <label htmlFor="street">
-                Duong/Thon <span className="text-danger">(*)</span>
-              </label>
-              <input type="text" className="form-control" id="street"></input>
+              {this.renderInput("street", "Đường", "text")}
             </div>
             <div className="form-group col-md-2">
               {this.renderInput("number", "Số nhà", "text")}
@@ -111,6 +202,13 @@ class PostForm extends Form {
                 this.state.roomType
               )}
             </div>
+            <div className="form-group col-md-3">
+              {this.renderSelect(
+                "isWithOwner",
+                "Chung chủ",
+                this.state.defaultData
+              )}
+            </div>
             <div className="form-group col-md-1">
               {this.renderInput("roomNumber", "Số phòng", "text")}
             </div>
@@ -123,14 +221,13 @@ class PostForm extends Form {
           </div>
           <h6 className="card-title text-info">Điều kiện cơ sở vật chất</h6>
           <div className="form-row ml-1">
-            <div className="form-group col-md-6">
-              <label htmlFor="bathroom">Phòng tắm</label>
-              <input type="text" className="form-control" id="bathroom"></input>
+            <div className="form-group col-md-4">
+              {this.renderSelect("bathroom", "Phòng tắm", this.state.bathroom)}
             </div>
-            <div className="form-group col-md-6">
-              <label htmlFor="kitchen">Phòng bếp</label>
-              <input type="text" className="form-control" id="kitchen"></input>
+            <div className="form-group col-md-4">
+              {this.renderSelect("kitchen", "Phòng bếp", this.state.kitchen)}
             </div>
+            <div className="form-group col-md-4"></div>
             <div className="form-group col-md-3">
               {this.renderInput(
                 "electricityPrice",
@@ -166,7 +263,22 @@ class PostForm extends Form {
             </div>
           </div>
         </div>
-        <InfoOwner></InfoOwner>
+        <div className="border border-info rounded p-4 mt-4 mb-2 bg-white shadow">
+          <h5 className="card-title text-info">Thông tin bài đăng</h5>
+          <div className="form-row ml-1">
+            <div className="form-group col-md-6">
+              {this.renderInput("postName", "Tên bài đăng", "text")}
+            </div>
+            <div className="form-group col-md-6"></div>
+            <div className="form-group col-md-2">
+              {this.renderInput("duration", "Thời hạn", "number")}
+            </div>
+            <div className="form-group col-md-4">
+              {this.renderSelect("period", "Chu kỳ", this.state.period)}
+            </div>
+          </div>
+        </div>
+        <InfoOwner data={this.state.user}></InfoOwner>
         {this.renderBtn("Dang Tin")}
       </div>
     );
