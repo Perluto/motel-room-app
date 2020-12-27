@@ -15,6 +15,7 @@ import Logout from "./page/logout";
 import UserResFrom from "./page/register";
 import RegisterForm from "./page/register";
 import Notify from "./components/notify";
+import Profile from "./page/profile";
 
 import auth from "./service/authService";
 class App extends Component {
@@ -33,6 +34,7 @@ class App extends Component {
             <Route path="/login" component={Login}></Route>
             <Route path="/logout" component={Logout}></Route>
             <Route path="/register" component={RegisterForm}></Route>
+            <Route path="/profile" component={Profile}></Route>
             <ProtectedRouteOwner
               path="/create-post"
               component={PostResForm}
