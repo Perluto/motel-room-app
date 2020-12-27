@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Image1 from "../../image/teamb1.png";
 import "../../style/comment.css";
 import StarRating from "../common/rating/StarRating";
+import auth from "../../service/authService";
 class PostComment extends Component {
   state = {
     comment: [
@@ -11,6 +12,7 @@ class PostComment extends Component {
         name: "Duc Anh",
         cmt: "Wow! this is really great.",
         star: 3,
+        conform: false,
       },
       {
         image: Image1,
@@ -18,6 +20,7 @@ class PostComment extends Component {
         name: "Duc Anh",
         cmt: "Wow! this is really great.",
         star: 3,
+        conform: false,
       },
       {
         image: Image1,
@@ -25,9 +28,27 @@ class PostComment extends Component {
         name: "Duc Anh",
         cmt: "Wow! this is really great.",
         star: 3,
+        conform: true,
       },
+      {
+        image: Image1,
+        date: 5,
+        name: "Duc Anh",
+        cmt: "Wow! this is really great.",
+        star: 3,
+        conform: true,
+      }
     ],
+    isAdmin: false,
   };
+
+  componentDidMount() {
+    const user = auth.getCurrentUser();
+
+    this.setState({
+      isAdmin: user.isAdmin
+    })
+  }
 
   renderRating(data) {
     let res = [];
@@ -42,11 +63,54 @@ class PostComment extends Component {
     }
     return res;
   }
+  setConform = (index) => {
+    this.setState(state => ({
+      comment: state.comment.map(
+      (obj,i) => (i === index ? Object.assign(obj, { conform: true }) : obj)
+    )
+  }));
+    
+  }
 
   renderCommentList(data) {
     return data.map((comment, index) => {
       return (
-        <div key={index} className="w-100 mb-3">
+        (!comment.conform&&this.state.isAdmin) ? (
+          <div key={index} className="w-100 mb-3">
+          <div>
+            <div className="d-flex ml-1">
+              <h5 className="mr-2">
+                <strong>{comment.name}</strong>
+              </h5>
+              <small className="pt-1">{this.renderRating(comment.star)}</small>
+            </div>
+            <div className="ml-2">
+              <small>{comment.cmt}</small>
+            </div>
+          </div>
+            <div className="d-flex flex-row-reverse">
+              <i 
+                class="fas fa-lg fa-check-circle text-primary rounded mr-5 p-3 btn-light"
+                style={{ cursor: "pointer" }}
+                onClick={()=>this.setConform(index)}
+              />
+            </div>
+          {index === data.length - 1 ? (
+            ""
+          ) : (
+            <div className="mt-3 w-100 border-bottom"></div>
+          )}
+        </div>
+        ) : null
+      );
+    });
+  }
+
+  renderCommentListConform(data) {
+    return data.map((comment, index) => {
+      return (
+        comment.conform ? (
+          <div key={index} className="w-100 mb-3">
           <div>
             <div className="d-flex ml-1">
               <h5 className="mr-2">
@@ -64,6 +128,7 @@ class PostComment extends Component {
             <div className="mt-3 w-100 border-bottom"></div>
           )}
         </div>
+        ) : null
       );
     });
   }
@@ -94,6 +159,7 @@ class PostComment extends Component {
         <div className="w-100 border-bottom mb-3 mt-3"></div>
         <div className="d-flex flex-column">
           {this.renderCommentList(this.state.comment)}
+          {this.renderCommentListConform(this.state.comment)}
         </div>
       </div>
     );

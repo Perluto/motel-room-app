@@ -4,6 +4,7 @@ import Search from "../components/common/search";
 import Image1 from "../image/teamb1.png";
 import Pagination from "../components/common/pagination";
 import postService from "../service/postService";
+import userService from "../service/userService"
 
 class Home extends Component {
   state = {
@@ -52,6 +53,8 @@ class Home extends Component {
     postService.getAll().then((res) => {
       console.log(res);
     });
+    const a = userService.getAllOwner();
+    console.log(a);
   }
 
   handlePageChange = (page) => {

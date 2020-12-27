@@ -11,7 +11,7 @@ class EditProfile extends Component{
     }
     render() {
         const inputOwner = (
-            this.state.user.isOwner ? (
+            (this.state.user.isOwner&&!this.state.user.isAdmin) ? (
                 <>
                     <h5 className="mb-3 text-primary">Thông tin chủ phòng trọ:</h5>
                     <div className="form-group row">

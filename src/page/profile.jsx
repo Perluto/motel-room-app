@@ -16,20 +16,27 @@ class Profile extends Component{
                 data: 'Người thuê trọ'
             }
         ],
-        isOwner: true
+        isOwner: false,
+        isAdmin: false
     }
     componentDidMount() {
         const user = auth.getCurrentUser();
         this.setState({
-            isOwner: user.isOwner
+            isOwner: user.isOwner,
+            isAdmin: user.isAdmin
         })
+        console.log(user);
     }
     render() {
         const user = this.state.profile.map((user,index) => {
             return(
                 <div className="row d-flex mb-2" key={index}>
                     <div className="col-2"><strong>{user.label}</strong></div>
-                    <div className="col-4">{(user.label==='Vai trò:'&&this.state.isOwner)?'Chủ trọ':user.data}</div>
+                    <div className="col-4">
+                        {(user.label==='Vai trò:'&&this.state.isOwner)
+                        ?(this.state.isAdmin?'Admin':'Chủ trọ')
+                        :user.data}
+                    </div>
                 </div>
             )
         });
