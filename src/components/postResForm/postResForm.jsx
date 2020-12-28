@@ -122,6 +122,7 @@ class PostForm extends Form {
       })
       .catch((err) => {
         alert("Error");
+        window.location = "/";
       });
   };
 

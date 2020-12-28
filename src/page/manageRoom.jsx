@@ -50,7 +50,12 @@ class ManagePost extends Component {
     roomService
       .updateRoom(data.idRoomRef, { status: !data.isHire })
       .then((res) => {
-        console.log(res);
+        alert("Done");
+        window.location = "/manage-post";
+      })
+      .catch((err) => {
+        alert("Error");
+        window.location = "/manage-post";
       });
   }
 

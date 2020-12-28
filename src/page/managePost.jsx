@@ -46,10 +46,12 @@ class ManagePost extends Component {
     postService
       .updateStatusPost(data._id, { isConfirm: true })
       .then((res) => {
-        console.log(res);
+        alert("Done");
+        window.location="/manage-post"
       })
       .catch((err) => {
-        console.log(err);
+        alert("Error");
+        window.location = "/manage-post";
       });
   }
 
