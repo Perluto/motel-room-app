@@ -9,7 +9,7 @@ class Profile extends Component{
         profile:[
             {
                 label: 'Tên:',
-                data: 'Đức Anh'
+                data: ''
             },
             {
                 label: 'Vai trò:',
@@ -17,13 +17,15 @@ class Profile extends Component{
             }
         ],
         isOwner: false,
-        isAdmin: false
+        isAdmin: false,
+        username: '',
     }
     componentDidMount() {
         const user = auth.getCurrentUser();
         this.setState({
             isOwner: user.isOwner,
-            isAdmin: user.isAdmin
+            isAdmin: user.isAdmin,
+            username: user.username
         })
         console.log(user);
     }
@@ -35,7 +37,7 @@ class Profile extends Component{
                     <div className="col-4">
                         {(user.label==='Vai trò:'&&this.state.isOwner)
                         ?(this.state.isAdmin?'Admin':'Chủ trọ')
-                        :user.data}
+                        :(user.label==='Tên:'?this.state.username:user.data)}
                     </div>
                 </div>
             )
