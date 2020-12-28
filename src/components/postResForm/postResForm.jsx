@@ -117,9 +117,12 @@ class PostForm extends Form {
         return postService.addPost(post);
       })
       .then((res) => {
-        console.log(res);
+        alert("Done");
+        window.location = "/";
       })
-      .catch((err) => {});
+      .catch((err) => {
+        alert("Error");
+      });
   };
 
   componentDidMount() {
@@ -217,10 +220,10 @@ class PostForm extends Form {
               {this.renderInput("roomNumber", "Số phòng", "text")}
             </div>
             <div className="form-group col-md-2">
-              {this.renderInput("area", "Diện tích", "number")}
+              {this.renderInput("area", "Diện tích (m2)", "number")}
             </div>
             <div className="form-group col-md-2">
-              {this.renderInput("price", "Giá cả", "number")}
+              {this.renderInput("price", "Giá cả (nghìn đồng)", "number")}
             </div>
           </div>
           <h6 className="card-title text-info">Điều kiện cơ sở vật chất</h6>
@@ -235,12 +238,16 @@ class PostForm extends Form {
             <div className="form-group col-md-3">
               {this.renderInput(
                 "electricityPrice",
-                "Giá điện (kW/h)",
+                "Giá điện (nghìn đồng kW/h)",
                 "number"
               )}
             </div>
             <div className="form-group col-md-3">
-              {this.renderInput("waterPrice", "Giá nước (m3)", "number")}
+              {this.renderInput(
+                "waterPrice",
+                "Giá nước (nghìn đồng/m3)",
+                "number"
+              )}
             </div>
             <div className="form-group col-md-12">
               {this.renderRadio("waterHeater", "Bình nóng lạnh")}

@@ -3,9 +3,6 @@ import PostStatus from "./postStatus";
 import PostComment from "./postComment";
 import Slide from "../common/slide";
 import Report from "../common/report";
-import Image1 from "../../image/teamb1.png";
-import Image2 from "../../image/teamb2.jpg";
-import Image3 from "../../image/teamb3.jpg";
 import Reaction from "../common/reaction";
 
 import lodash from "lodash";
@@ -17,6 +14,7 @@ import postService from "../../service/postService";
 import roomService from "../../service/roomService";
 import addressService from "../../service/addressService";
 import userService from "../../service/userService";
+import authService from "../../service/authService";
 class PostDetail extends Component {
   state = {
     post: {},
@@ -24,7 +22,6 @@ class PostDetail extends Component {
     address: "",
     facilities: {},
     owner: {},
-    images: [Image1, Image2, Image3],
   };
 
   componentDidMount() {
@@ -43,7 +40,10 @@ class PostDetail extends Component {
           "roomNumber",
           "status",
         ]);
+
         let post = lodash.pick(res.data, [
+          "idUserRef",
+          "isConfirm",
           "view",
           "like",
           "follow",
@@ -63,7 +63,7 @@ class PostDetail extends Component {
       .then((res) => {
         let facilities = res[0].data;
         let address = formatAddress(res[1].data);
-        let owner = lodash.pick(res[2].data, ["name", "phone"]);
+        let owner = lodash.pick(res[2].data, ["_id", "name", "phone"]);
         let roomType = res[3].data;
         let room = this.state.room;
         room.roomType = roomType.name;
@@ -76,13 +76,17 @@ class PostDetail extends Component {
 
   render() {
     const { address, room, owner, facilities, post } = this.state;
-    console.log(room);
+    const userCurr = authService.getCurrentUser();
     return (
       <div className="container">
         <div className="w-100 p-1"></div>
-        <div className="w-50 bg-white border rounded p-4 ml-5 mt-5">
-          <PostStatus data={post}></PostStatus>
-        </div>
+        {userCurr._id === post.idUserRef ? (
+          <div className="w-50 bg-white border rounded p-4 ml-5 mt-5">
+            <PostStatus data={post}></PostStatus>
+          </div>
+        ) : (
+          ""
+        )}
         <div
           id="common"
           className="w-100 mt-5 mb-5 bg-white p-4 border rounded d-flex flex-column"
@@ -132,7 +136,7 @@ class PostDetail extends Component {
           <div>{formatFacilities(facilities, room)}</div>
         </div>
         <div id="images" className="w-100 bg-white border rounded p-3 mb-5">
-          <Slide images={this.state.images}></Slide>
+          <Slide images={room.image}></Slide>
         </div>
         <div className="bg-white border rounded p-2 w-75 mb-5">
           <PostComment></PostComment>

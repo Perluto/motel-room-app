@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import PostShortcut from "../components/postForm/postShortcut";
 import Search from "../components/common/search";
-import Image1 from "../image/teamb1.png";
 import Pagination from "../components/common/pagination";
 import postService from "../service/postService";
 import lodash from "lodash";
-import userService from "../service/userService"
+import userService from "../service/userService";
 class Home extends Component {
   state = {
     data: [],
@@ -16,19 +15,18 @@ class Home extends Component {
     postService.getConfirmedRoom().then((res) => {
       let data = [];
       res.data.forEach((e) => {
-        console.log(e);
         const tmp = lodash.pick(e, ["_id", "postName"]);
 
         tmp.area = e.idRoomRef.area;
         tmp.price = e.idRoomRef.price;
-        tmp.image = Image1; //e.idRoomRef.image[0];
-        tmp.isHire = e.idRoomRef.status ? "Đã có người thuê" : "Chưa có ai thuê";
+        tmp.image = e.idRoomRef.image[0];
+        tmp.isHire = e.idRoomRef.status
+          ? "Đã có người thuê"
+          : "Chưa có ai thuê";
         data.push(tmp);
       });
       this.setState({ data });
     });
-    const a = userService.getAllOwner();
-    console.log(a);
   }
 
   handlePageChange = (page) => {
@@ -62,9 +60,10 @@ class Home extends Component {
             </div>
           </div>
         </div>
+        {/*
         <div className="p-5 mt-5 order border-light rounded bg-white shadow m-2">
           Test
-        </div>
+        </div>*/}
       </div>
     );
   }

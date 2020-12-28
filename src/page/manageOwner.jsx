@@ -6,12 +6,10 @@ import { formatDate } from "../utils/dateCalculate";
 
 import postService from "../service/postService";
 
-class ManagePost extends Component {
+class ManageOwner extends Component {
   state = {
     column: [
-      { label: "Tên bài", key: "postName" },
-      { label: "Ngày đăng", key: "postedDate" },
-      { label: "Ngày hết hạn", key: "dueDate" },
+      { label: "username", key: "username" },
       { label: "Trạng thái", key: "status" },
       { label: "Duyệt", key: "btn confirm" },
     ],
@@ -79,4 +77,4 @@ class ManagePost extends Component {
   }
 }
 
-export default ManagePost;
+export default ManageOwner;

@@ -24,7 +24,7 @@ function addPost(data) {
 }
 
 function updateStatusPost(id, status) {
-  return http.put(apiEndpoint + `/${id}`, status);
+  return http.put(apiEndpoint + `/${id}`, { status });
 }
 
 function view(id) {

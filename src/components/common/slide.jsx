@@ -4,6 +4,7 @@ class Slide extends Component {
   state = { data: "", label: "", className: "" };
   render() {
     const images = this.props.images;
+    if (!images) return null;
     return (
       <React.Fragment>
         <h5 className="text-info">Hinh anh</h5>

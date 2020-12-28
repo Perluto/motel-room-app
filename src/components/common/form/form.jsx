@@ -95,7 +95,6 @@ class Form extends Component {
   };
 
   renderBtn = (label) => {
-    console.log(this.validate())
     return (
       <button
         disabled={this.validate()}
