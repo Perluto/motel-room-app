@@ -55,7 +55,6 @@ class EditProfile extends Component{
             </form>
         )
     }
->>>>>>> 27551657d9f538a508fe51177585eb824e371318
 }
 
 export default EditProfile;
