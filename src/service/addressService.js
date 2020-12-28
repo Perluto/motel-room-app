@@ -14,6 +14,9 @@ function getDistrict(idCityRef) {
 function getWard(idDistrictRef) {
   return http.get(apiEndpoint + `/ward?idDistrictRef=${idDistrictRef}`);
 }
+function getAddress(id) {
+  return http.get(apiEndpoint + `/${id}`);
+}
 
 function addAddress(data) {
   return http.post(apiEndpoint, {
@@ -25,5 +28,6 @@ export default {
   getCity,
   getDistrict,
   getWard,
+  getAddress,
   addAddress,
 };

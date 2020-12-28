@@ -15,16 +15,19 @@ class postShortcut extends Component {
         <div className="d-flex flex-row p-2">
           <div className="w-50">
             <Link to="/post">
-              <img src={data.image1} className="d-block w-100" alt="" />
+              <img src={data.image} className="d-block w-100" alt="" />
             </Link>
           </div>
           <div className="w-50 container d-flex flex-column">
-            <Link className="text-danger text-decoration-none" to="/post">
-              {data.title}
+            <Link
+              className="text-danger text-decoration-none"
+              to={`/posts/${data._id}`}
+            >
+              {data.postName}
             </Link>
             <strong>{data.price} triệu/tháng</strong>
-            <p>{data.acreage} m²</p>
-            <p>{data.p_content}</p>
+            <p>{data.area} m²</p>
+            <p>{data.isHire}</p>
           </div>
         </div>
       </div>

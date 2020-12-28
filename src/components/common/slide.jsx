@@ -3,6 +3,7 @@ import React, { Component } from "react";
 class Slide extends Component {
   state = { data: "", label: "", className: "" };
   render() {
+    const images = this.props.images;
     return (
       <React.Fragment>
         <h5 className="text-info">Hinh anh</h5>
@@ -14,29 +15,15 @@ class Slide extends Component {
           </ul>
 
           <div className="carousel-inner bg-secondary">
-            <div className="carousel-item active">
-              <img
-                src={this.props.images[0]}
-                className="d-block w-50 mx-auto"
-                alt="Image1"
-              />
-            </div>
-            <div className="carousel-item">
-              <img
-                src={this.props.images[1]}
-                className="d-block w-50 mx-auto"
-                alt="Image2"
-              />
-            </div>
-            <div className="carousel-item">
-              <img
-                src={this.props.images[2]}
-                className="d-block w-50 mx-auto"
-                alt="Image3"
-              />
-            </div>
+            {images.map((e, index) => {
+              const c = index === 0 ? "carousel-item active" : "carousel-item";
+              return (
+                <div className={c}>
+                  <img src={e} className="d-block w-50 mx-auto" alt={index} />
+                </div>
+              );
+            })}
           </div>
-
           <a className="carousel-control-prev" href="#slide" data-slide="prev">
             <span
               className="carousel-control-prev-icon"
