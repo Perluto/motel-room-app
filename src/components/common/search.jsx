@@ -27,52 +27,7 @@ class Search extends Component {
         <h4>
           <strong className="text-primary">Bộ lọc</strong>
         </h4>
-        <div className="d-flex flex-column">
-          <div className="d-flex align-items-center">
-            <div className="w-25">Test:</div>
-            <Select
-              className="w-75"
-              options={this.state.roomType}
-              name="test"
-              defaultValue={this.state.data["roomType"]}
-              onChange={this.handleChange}
-              placeholder={"Chọn..."}
-            ></Select>
-          </div>
-          <div className="d-flex align-items-center">
-            <div className="w-25">Test:</div>
-            <Select
-              className="w-75"
-              options={this.state.roomType}
-              name="test"
-              defaultValue={this.state.data["roomType"]}
-              onChange={this.handleChange}
-              placeholder={"Chọn..."}
-            ></Select>
-          </div>
-          <div className="d-flex align-items-center">
-            <div className="w-25">Test:</div>
-            <Select
-              className="w-75"
-              options={this.state.roomType}
-              name="test"
-              defaultValue={this.state.data["roomType"]}
-              onChange={this.handleChange}
-              placeholder={"Chọn..."}
-            ></Select>
-          </div>
-          <div className="d-flex align-items-center">
-            <div className="w-25">Test:</div>
-            <Select
-              className="w-75"
-              options={this.state.roomType}
-              name="test"
-              defaultValue={this.state.data["roomType"]}
-              onChange={this.handleChange}
-              placeholder={"Chọn..."}
-            ></Select>
-          </div>
-        </div>
+        <div className="d-flex flex-column"></div>
       </div>
     );
   }

@@ -3,30 +3,39 @@ import { Link } from "react-router-dom";
 
 class TableBody extends Component {
   renderCell = (e, col) => {
-    if (col.key === "btn") {
-      if(col.check === "post"){
-        return <Link to="/notifications">
-              <button className="btn btn-primary">{col.label}</button>
-            </Link>;
-      }
-      return <button className="btn btn-primary">{col.label}</button>;
+    if (col.key === "btn confirm") {
+      return (
+        <button
+          className="btn btn-primary"
+          disabled={e.isConfirm}
+          onClick={() => this.props.handleClick(e)}
+        >
+          {col.label}
+        </button>
+      );
+    } else if (col.key === "btn update") {
+      return (
+        <button
+          className="btn btn-primary"
+          onClick={() => this.props.handleClick(e)}
+        >
+          {col.label}
+        </button>
+      );
     }
     return e[col.key];
   };
 
-  createKey = (e, col) => {
-    return "";
-  };
-
   render() {
     const { data, column } = this.props;
-    console.log(data);
     return (
       <tbody>
         {data.map((e, index) => {
           return (
             <tr key={e._id}>
-              <td >{index}</td>
+              <td>
+                <Link to={`/posts/${e._id}`}>{index}</Link>
+              </td>
               {column.map((col) => (
                 <td>{this.renderCell(e, col)}</td>
               ))}

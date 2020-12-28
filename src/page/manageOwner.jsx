@@ -5,24 +5,20 @@ import lodash from "lodash";
 import { formatDate } from "../utils/dateCalculate";
 
 import postService from "../service/postService";
-import auth from "../service/authService";
-import roomService from "../service/roomService";
-class ManagePost extends Component {
+
+class ManageOwner extends Component {
   state = {
     column: [
-      { label: "Tên bài", key: "postName" },
-      { label: "Ngày đăng", key: "postedDate" },
-      { label: "Ngày hết hạn", key: "dueDate" },
-      { label: "Trạng thái", key: "isConfirm" },
-      { label: "Tình trạng", key: "status" },
-      { label: "Cập nhật", key: "btn update" },
+      { label: "username", key: "username" },
+      { label: "Trạng thái", key: "status" },
+      { label: "Duyệt", key: "btn confirm" },
     ],
     data: [],
     currentPage: 1,
   };
 
   componentDidMount() {
-    postService.getPostByUser(auth.getCurrentUser()._id).then((res) => {
+    postService.getAll().then((res) => {
       let data = [];
       res.data.forEach((e) => {
         const tmp = lodash.pick(e, [
@@ -35,10 +31,8 @@ class ManagePost extends Component {
 
         tmp.postedDate = formatDate(tmp.postedDate);
         tmp.dueDate = formatDate(tmp.dueDate);
-        tmp.isConfirm = tmp.isConfirm ? "Đã xác nhận" : "Chưa xác nhận";
-        tmp.status = e.idRoomRef.status ? "Đã thuê" : "Chưa thuê";
-        tmp.isHire = e.idRoomRef.status;
-        tmp.idRoomRef = e.idRoomRef._id;
+        tmp.status = tmp.isConfirm ? "Đã xác nhận" : "Chưa xác nhận";
+
         data.push(tmp);
       });
 
@@ -46,16 +40,14 @@ class ManagePost extends Component {
     });
   }
 
-  update(data) {
-    roomService
-      .updateRoom(data.idRoomRef, { status: !data.isHire })
+  confirm(data) {
+    postService
+      .updateStatusPost(data._id, { isConfirm: true })
       .then((res) => {
-        alert("Done");
-        window.location = "/manage-post";
+        console.log(res);
       })
       .catch((err) => {
-        alert("Error");
-        window.location = "/manage-post";
+        console.log(err);
       });
   }
 
@@ -66,17 +58,17 @@ class ManagePost extends Component {
   render() {
     return (
       <div className="pt-4">
-        <h3 className="ml-5 text-dark p-2 mb-3">Quản lý phòng thuê</h3>
+        <h3 className="ml-5 text-dark p-2 mb-3">Quản lý bài đăng</h3>
         <div className="container p-3 bg-white shadow rounded">
           <Table
             column={this.state.column}
             data={this.state.data}
-            handleClick={this.update}
+            handleClick={this.confirm}
           ></Table>
           <Pagination
             itemTotal={this.state.data.length}
             pageSize={2}
-            currentPage={1}
+            currentPage={this.state.currentPage}
             onPageChange={this.handlePageChange}
           ></Pagination>
         </div>
@@ -85,4 +77,4 @@ class ManagePost extends Component {
   }
 }
 
-export default ManagePost;
+export default ManageOwner;

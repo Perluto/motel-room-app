@@ -3,30 +3,90 @@ import PostStatus from "./postStatus";
 import PostComment from "./postComment";
 import Slide from "../common/slide";
 import Report from "../common/report";
-import Image1 from "../../image/teamb1.png";
-import Image2 from "../../image/teamb2.jpg";
-import Image3 from "../../image/teamb3.jpg";
 import Reaction from "../common/reaction";
 
+import lodash from "lodash";
+import { formatDate } from "../../utils/dateCalculate";
+import { formatAddress } from "../../utils/formatAddress";
+import { formatFacilities } from "../../utils/formatFacilities";
+
+import postService from "../../service/postService";
+import roomService from "../../service/roomService";
+import addressService from "../../service/addressService";
+import userService from "../../service/userService";
+import authService from "../../service/authService";
 class PostDetail extends Component {
   state = {
-    name: "Nguyen Duc Anh",
-    address: "158/65 Đường số 9, Phường 9, Quận Gò Vấp, Hồ Chí Minh",
-    phone: 913696081,
-    price: 2,
-    acreage: 18,
-    expiration: "06/12/20",
-    update: "01/12/20",
-    images: [Image1, Image2, Image3],
+    post: {},
+    room: {},
+    address: "",
+    facilities: {},
+    owner: {},
   };
 
+  componentDidMount() {
+    const { match } = this.props;
+    const id = match.params.id;
+
+    postService
+      .getPostById(id)
+      .then((res) => {
+        const { idRoomRef: room } = res.data;
+        let newRoom = lodash.pick(room, [
+          "image",
+          "isWithOwner",
+          "price",
+          "area",
+          "roomNumber",
+          "status",
+        ]);
+
+        let post = lodash.pick(res.data, [
+          "idUserRef",
+          "isConfirm",
+          "view",
+          "like",
+          "follow",
+          "postedDate",
+          "dueDate",
+          "postName",
+        ]);
+
+        this.setState({ post, room: newRoom });
+        return Promise.all([
+          roomService.getFacilities(room.idFacilitiesRef),
+          addressService.getAddress(room.idAddressRef),
+          userService.getOwnerById(room.idUserRef),
+          roomService.getRoomTypeById(room.idRoomTypeRef),
+        ]);
+      })
+      .then((res) => {
+        let facilities = res[0].data;
+        let address = formatAddress(res[1].data);
+        let owner = lodash.pick(res[2].data, ["_id", "name", "phone"]);
+        let roomType = res[3].data;
+        let room = this.state.room;
+        room.roomType = roomType.name;
+        this.setState({ room });
+        this.setState({ facilities });
+        this.setState({ address });
+        this.setState({ owner });
+      });
+  }
+
   render() {
+    const { address, room, owner, facilities, post } = this.state;
+    const userCurr = authService.getCurrentUser();
     return (
       <div className="container">
         <div className="w-100 p-1"></div>
-        <div className="w-50 bg-white border rounded p-4 ml-5 mt-5">
-          <PostStatus></PostStatus>
-        </div>
+        {userCurr._id === post.idUserRef ? (
+          <div className="w-50 bg-white border rounded p-4 ml-5 mt-5">
+            <PostStatus data={post}></PostStatus>
+          </div>
+        ) : (
+          ""
+        )}
         <div
           id="common"
           className="w-100 mt-5 mb-5 bg-white p-4 border rounded d-flex flex-column"
@@ -35,31 +95,33 @@ class PostDetail extends Component {
             <tbody>
               <tr>
                 <td className="bg-light">Địa chỉ:</td>
-                <td className="w-75">{this.state.address}</td>
+                <td className="w-75">{address}</td>
               </tr>
               <tr>
                 <td className="bg-light">Người đăng:</td>
-                <td className="w-75">{this.state.name}</td>
+                <td className="w-75">{owner.name}</td>
               </tr>
               <tr>
                 <td className="bg-light">Điện thoại:</td>
-                <td className="w-75">{this.state.phone}</td>
+                <td className="w-75">{owner.phone}</td>
               </tr>
               <tr>
                 <td className="bg-light">Diện tích:</td>
-                <td className="w-75">{this.state.acreage}</td>
+                <td className="w-75">
+                  {room.area} m<sup>2</sup>
+                </td>
               </tr>
               <tr>
                 <td className="bg-light">Giá:</td>
-                <td className="w-75">{this.state.price}</td>
+                <td className="w-75">{room.price}.000 đồng/tháng</td>
               </tr>
               <tr>
-                <td className="bg-light">Ngày cập nhật:</td>
-                <td className="w-75">{this.state.update}</td>
+                <td className="bg-light">Loại phòng:</td>
+                <td className="w-75">{room.roomType}</td>
               </tr>
               <tr>
-                <td className="bg-light">Ngày hết hạn:</td>
-                <td className="w-75">{this.state.expiration}</td>
+                <td className="bg-light">Ngày đăng:</td>
+                <td className="w-75">{formatDate(post.postedDate)}</td>
               </tr>
             </tbody>
           </table>
@@ -69,13 +131,12 @@ class PostDetail extends Component {
             <Report></Report>
           </div>
         </div>
-
         <div id="details" className=" w-100 bg-white border rounded p-3 mb-4">
           <h5 className="text-info">Thông tin mô tả</h5>
-          <div></div>
+          <div>{formatFacilities(facilities, room)}</div>
         </div>
         <div id="images" className="w-100 bg-white border rounded p-3 mb-5">
-          <Slide images={this.state.images}></Slide>
+          <Slide images={room.image}></Slide>
         </div>
         <div className="bg-white border rounded p-2 w-75 mb-5">
           <PostComment></PostComment>

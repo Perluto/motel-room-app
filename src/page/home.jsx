@@ -1,60 +1,32 @@
 import React, { Component } from "react";
 import PostShortcut from "../components/postForm/postShortcut";
 import Search from "../components/common/search";
-import Image1 from "../image/teamb1.png";
 import Pagination from "../components/common/pagination";
 import postService from "../service/postService";
-import userService from "../service/userService"
-
+import lodash from "lodash";
+import userService from "../service/userService";
 class Home extends Component {
   state = {
-    content: [
-      {
-        title: "Phòng trọ Q3, CMT8; 14 m2, 3,0 triệu/tháng ",
-        price: 3,
-        acreage: 14,
-        address: "Quận 3, Hồ Chí Minh",
-        p_content:
-          "Chính chủ cho thuê 06 phòng mới, khép kín, sạch, đẹp, tường và sàn ốp gạch tại 540/2/11 CMT8, P11, Q3.- 03 phòng 14 m2;…",
-        image1: Image1,
-      },
-      {
-        title: "Phòng trọ Q3, CMT8; 14 m2, 3,0 triệu/tháng ",
-        price: 3,
-        acreage: 14,
-        address: "Quận 3, Hồ Chí Minh",
-        p_content:
-          "Chính chủ cho thuê 06 phòng mới, khép kín, sạch, đẹp, tường và sàn ốp gạch tại 540/2/11 CMT8, P11, Q3.- 03 phòng 14 m2;…",
-        image1: Image1,
-      },
-      {
-        title: "Phòng trọ Q3, CMT8; 14 m2, 3,0 triệu/tháng ",
-        price: 3,
-        acreage: 14,
-        address: "Quận 3, Hồ Chí Minh",
-        p_content:
-          "Chính chủ cho thuê 06 phòng mới, khép kín, sạch, đẹp, tường và sàn ốp gạch tại 540/2/11 CMT8, P11, Q3.- 03 phòng 14 m2;…",
-        image1: Image1,
-      },
-      {
-        title: "Phòng trọ Q3, CMT8; 14 m2, 3,0 triệu/tháng ",
-        price: 3,
-        acreage: 14,
-        address: "Quận 3, Hồ Chí Minh",
-        p_content:
-          "Chính chủ cho thuê 06 phòng mới, khép kín, sạch, đẹp, tường và sàn ốp gạch tại 540/2/11 CMT8, P11, Q3.- 03 phòng 14 m2;…",
-        image1: Image1,
-      },
-    ],
+    data: [],
     currentPage: 1,
   };
 
   componentDidMount() {
-    postService.getAll().then((res) => {
-      console.log(res);
+    postService.getConfirmedRoom().then((res) => {
+      let data = [];
+      res.data.forEach((e) => {
+        const tmp = lodash.pick(e, ["_id", "postName"]);
+
+        tmp.area = e.idRoomRef.area;
+        tmp.price = e.idRoomRef.price;
+        tmp.image = e.idRoomRef.image[0];
+        tmp.isHire = e.idRoomRef.status
+          ? "Đã có người thuê"
+          : "Chưa có ai thuê";
+        data.push(tmp);
+      });
+      this.setState({ data });
     });
-    const a = userService.getAllOwner();
-    console.log(a);
   }
 
   handlePageChange = (page) => {
@@ -62,6 +34,7 @@ class Home extends Component {
   };
 
   render() {
+    const { data } = this.state;
     return (
       <div className="d-flex flex-column">
         <div className="d-flex pt-5">
@@ -74,15 +47,12 @@ class Home extends Component {
             </h4>
             <div className="jumbotron bg-white">
               <div className="row">
-                <PostShortcut data={this.state.content[0]}></PostShortcut>
-                <PostShortcut data={this.state.content[1]}></PostShortcut>
-                <PostShortcut data={this.state.content[2]}></PostShortcut>
-                <PostShortcut data={this.state.content[0]}></PostShortcut>
-                <PostShortcut data={this.state.content[0]}></PostShortcut>
-                <PostShortcut data={this.state.content[0]}></PostShortcut>
+                {data.map((e) => {
+                  return <PostShortcut data={e}></PostShortcut>;
+                })}
               </div>
               <Pagination
-                itemTotal={this.state.content.length}
+                itemTotal={data.length}
                 pageSize={2}
                 currentPage={this.state.currentPage}
                 onPageChange={this.handlePageChange}
@@ -90,9 +60,10 @@ class Home extends Component {
             </div>
           </div>
         </div>
+        {/*
         <div className="p-5 mt-5 order border-light rounded bg-white shadow m-2">
           Test
-        </div>
+        </div>*/}
       </div>
     );
   }

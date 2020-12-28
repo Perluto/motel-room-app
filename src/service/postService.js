@@ -7,8 +7,12 @@ function getAll() {
   return http.get(apiEndpoint + "/all");
 }
 
+function getConfirmedRoom() {
+  return http.get(apiEndpoint + "/all/confirmed");
+}
+
 function getPostByUser(id) {
-  http.get(apiEndpoint + `/owner/${id}`);
+  return http.get(apiEndpoint + `/owner/${id}`);
 }
 
 function getPostById(id) {
@@ -20,7 +24,7 @@ function addPost(data) {
 }
 
 function updateStatusPost(id, status) {
-  return http.put(apiEndpoint + `/${id}`, status);
+  return http.put(apiEndpoint + `/${id}`, { status });
 }
 
 function view(id) {
@@ -34,12 +38,23 @@ function follow(id, data) {
   return http.put(apiEndpoint + `/${id}/like`, data);
 }
 
+function comment(idPost, data) {
+  return http.post(apiEndpoint + `/${idPost}/comment`, { data: data });
+}
+
+function confirmComment(idPost, idCmt) {
+  return http.put(apiEndpoint + `/${idPost}/comment${idCmt}`);
+}
+
 export default {
   getAll,
+  getConfirmedRoom,
   getPostById,
   getPostByUser,
   addPost,
   updateStatusPost,
+  comment,
+  confirmComment,
   like,
   view,
   follow,

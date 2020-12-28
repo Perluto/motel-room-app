@@ -12,7 +12,7 @@ import ManagePost from "./page/managePost";
 import ManageRoom from "./page/manageRoom";
 import Login from "./page/login";
 import Logout from "./page/logout";
-import UserResFrom from "./page/register";
+import ManageOwner from "./page/manageOwner";
 import RegisterForm from "./page/register";
 import Notify from "./components/notify";
 import Profile from "./page/profile";
@@ -54,6 +54,10 @@ class App extends Component {
             <ProtectedRouteOwner
               path="/manage-room"
               component={ManageRoom}
+            ></ProtectedRouteOwner>
+            <ProtectedRouteOwner
+              path="/manage-owner"
+              component={ManageOwner}
             ></ProtectedRouteOwner>
             <ProtectedRoute
               path="/notifications/:id"

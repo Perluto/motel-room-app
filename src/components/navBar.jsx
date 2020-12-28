@@ -21,11 +21,6 @@ class Navbar extends Component {
           className: "nav-item nav-link",
         },
         {
-          label: "Quản lý bài đăng",
-          link: "/manage-post",
-          className: "nav-item nav-link",
-        },
-        {
           label: "Quản lý phòng thuê",
           link: "/manage-room",
           className: "nav-item nav-link",
@@ -65,7 +60,7 @@ class Navbar extends Component {
 
   componentDidMount() {
     const { user } = this.props;
-    
+
     if (user.isAdmin) {
       this.setState({ data: this.state.options["admin"] });
     } else if (user.isOwner) {

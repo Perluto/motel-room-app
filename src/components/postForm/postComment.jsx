@@ -116,7 +116,6 @@ class PostComment extends Component {
               <h5 className="mr-2">
                 <strong>{comment.name}</strong>
               </h5>
-              <small className="pt-1">{this.renderRating(comment.star)}</small>
             </div>
             <div className="ml-2">
               <small>{comment.cmt}</small>
@@ -137,12 +136,12 @@ class PostComment extends Component {
     return (
       <div className="d-flex flex-column p-3">
         <div>
-          <div className="d-inline mr-3">Danh gia:</div>
+          <div className="d-inline mr-3">Đánh giá:</div>
           <StarRating></StarRating>
         </div>
         <div className="mb-2">
           <label for="comment" className="form-label">
-            Comment:
+            Bình luận:
           </label>
           <textarea
             id="comment"
@@ -153,7 +152,7 @@ class PostComment extends Component {
         </div>
         <div className="d-flex mb-2 flex-row-reverse">
           <button className="btn btn-outline-primary" type="button">
-            Post
+            Đăng
           </button>
         </div>
         <div className="w-100 border-bottom mb-3 mt-3"></div>
