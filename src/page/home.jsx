@@ -5,7 +5,7 @@ import Image1 from "../image/teamb1.png";
 import Pagination from "../components/common/pagination";
 import postService from "../service/postService";
 import lodash from "lodash";
-import { formatDate } from "../utils/dateCalculate";
+import userService from "../service/userService"
 class Home extends Component {
   state = {
     data: [],
@@ -27,6 +27,8 @@ class Home extends Component {
       });
       this.setState({ data });
     });
+    const a = userService.getAllOwner();
+    console.log(a);
   }
 
   handlePageChange = (page) => {
