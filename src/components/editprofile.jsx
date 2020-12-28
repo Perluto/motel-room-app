@@ -1,74 +1,110 @@
-import React, { Component } from "react";
-import auth from '../service/authService';
-import account from '../service/userService';
+import React from "react";
+import Joi from "joi-browser";
+import Form from "../components/common/form/form";
 
-class EditProfile extends Component{
+import addressService from '../service/addressService';
+import { changeNameProps } from "../utils/changeNameProps";
+
+class EditProfile extends Form{
     state = {
-        user: [],
-        password: '',
-    }
-
+        data: { username: "", password: "", isOwner: "" },
+        disabled: false,
+        ownerSchema: {
+            name: Joi.string().required().label("Name"),
+            phone: Joi.string().length(10).required("Phone"),
+            cardId: Joi.string().length(10).required("Card Id"),
+            idWardRef: Joi.string().required().label("Phường/Xã"),
+            idDistrictRef: Joi.string().required().label("Quận/Huyện"),
+            idCityRef: Joi.string().required().label("Thành phố/Tỉnh"),
+            street: Joi.string().required().label("Đường"),
+            number: Joi.string().required().label("Số nhà"),
+          },
+        city: [],
+        district: [],
+        ward: [],
+        errors: {},
+        }
+    schema = this.state.ownerSchema;
     componentDidMount() {
-        const role = auth.getCurrentUser();
-        this.setState({
-            user: role
-        })
+        addressService.getCity().then((res) => {
+          let city = changeNameProps(res.data, "_id", "value");
+          city = changeNameProps(city, "name", "label");
+          this.setState({ city });
+        });
     }
-    ChangePass = (event) => {
-        this.setState({
-            password: event.target.value
-        })
-        console.log(this.state.pass)
-    }
-    handleSubmit = (event) => {
-        const {user,password} = this.state;
-        console.log({password},user);
-        if(password.length<5) alert("Mật khẩu tối thiểu phải có 6 ký tự"); 
-        else{
-            account.changePassword(user._id,{password}).then((res) => {
-                console.log(res);
-            })
-            alert("Mật khẩu đã thay đổi");
+    
+    componentDidUpdate(prevProps,prevState) {
+
+        const { data } = this.state;
+        if (data.idCityRef && data.idCityRef !== prevState.data.idCityRef) {
+            addressService.getDistrict(data.idCityRef).then((res) => {
+            let district = changeNameProps(res.data, "_id", "value");
+            district = changeNameProps(district, "name", "label");
+            this.setState({ district });
+            });
+        }
+
+        if (
+            data.idDistrictRef &&
+            data.idDistrictRef !== prevState.data.idDistrictRef
+        ) {
+            addressService.getWard(data.idDistrictRef).then((res) => {
+            let data = changeNameProps(res.data, "_id", "value");
+            data = changeNameProps(data, "name", "label");
+            this.setState({ ward: data });
+            });
         }
     }
+    
     render() {
-        const inputOwner = (
-            (this.state.user.isOwner&&!this.state.user.isAdmin) ? (
-                <>
-                    <h5 className="mb-3 text-primary">Thông tin chủ phòng trọ:</h5>
-                    <div className="form-group row">
-                        <label className="col-lg-3 col-form-label form-control-label">Name:</label>
-                        <input className="col-lg-6 form-control" type="text" value="Đức Anh"/>
-                    </div> 
-                    <div className="form-group row">
-                        <label className="col-lg-3 col-form-label form-control-label">Phone:</label>
-                        <input className="col-lg-6 form-control" type="text" value="12345678"/>
-                    </div>
-                    <div className="form-group row">
-                        <label className="col-lg-3 col-form-label form-control-label">Card Id:</label>
-                        <input className="col-lg-6 form-control" type="text" value="123456789"/>
-                    </div>
-                </>
-            ) : null
-        )
+        const { disabled } = this.state;
         return (
             
-            <form onSubmit={this.handleSubmit}>
-                 {
-                     inputOwner
-                 }
-                <h5 className="mb-3 text-primary">Tài khoản:</h5>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label">Password</label>
-                    <input class="form-control col-lg-6" type="password" placeholder="111111" onChange={this.ChangePass}/>
+        <div>
+            <h4 className="card-title text-info">Thông tin chủ phòng trọ</h4>
+            <div className="form-row ml-1 mt-1">
+                <div className="form-group col-md-5">
+                    {this.renderInput("name", "Name", "text", disabled)}
                 </div>
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label"></label>
-                    <div class="col-lg-6">
-                        <input type="submit" className="btn btn-primary" value="Submit"></input>
-                    </div>
+                <div className="form-group col-md-3">
+                    {this.renderInput("phone", "Phone", "text", disabled)}
                 </div>
-            </form>
+                <div className="form-group col-md-4">
+                    {this.renderInput("cardId", "Card Id", "text", disabled)}
+                </div>
+                <div className="form-group col-md-4">
+                    {this.renderSelect(
+                        "idCityRef",
+                        "Thành phố/Tỉnh",
+                        this.state.city,
+                        disabled
+                    )}
+                </div>
+                <div className="form-group col-md-4">
+                    {this.renderSelect(
+                        "idDistrictRef",
+                        "Quận/Huyện",
+                        this.state.district,
+                        disabled
+                    )}
+                </div>
+                <div className="form-group col-md-4">
+                    {this.renderSelect(
+                        "idWardRef",
+                        "Phường/Xã",
+                        this.state.ward,
+                        disabled
+                    )}
+                </div>
+                <div className="form-group col-md-4">
+                    {this.renderInput("street", "Đường", "text", disabled)}
+                </div>
+                <div className="form-group col-md-2">
+                    {this.renderInput("number", "Số nhà", "text", disabled)}
+                </div>
+            </div>
+            {this.renderBtn("Submit")}
+        </div>
         )
     }
 }

@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 
 import EditProfile from "../components/editprofile";
 import auth from "../service/authService";
+import EditPassword from '../components/editpassword';
 
 class Profile extends Component{
     state = {
@@ -51,8 +52,15 @@ class Profile extends Component{
                                 <Link data-target="#profile" data-toggle="tab" class="nav-link active">Profile</Link>
                             </li>
                             <li class="nav-item">
-                                <Link data-target="#edit" data-toggle="tab" class="nav-link">Edit</Link>
+                                <Link data-target="#editpassword" data-toggle="tab" class="nav-link">Edit Password</Link>
                             </li>
+                            {
+                                (this.state.isOwner&&!this.state.isAdmin) ? (
+                                    <li class="nav-item">
+                                        <Link data-target="#editprofile" data-toggle="tab" class="nav-link">Edit Profile</Link>
+                                    </li>
+                                ) : null
+                            }
                         </ul>
                         <div className="tab-content py-4">
                             <div className="tab-pane active" id="profile">
@@ -61,9 +69,16 @@ class Profile extends Component{
                                     user
                                 }
                             </div>
-                            <div className="tab-pane" id="edit">
-                                <EditProfile></EditProfile>
+                            <div className="tab-pane" id="editpassword">
+                                <EditPassword/>
                             </div>
+                            {
+                                (this.state.isOwner&&!this.state.isAdmin) ? (
+                                    <div className="tab-pane" id="editprofile">
+                                        <EditProfile></EditProfile>
+                                    </div>
+                                ) : null
+                            }
                         </div>
                     </div>
                 </div>
