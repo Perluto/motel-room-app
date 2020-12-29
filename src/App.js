@@ -8,6 +8,7 @@ import ProtectedRouteOwner from "./components/protectedRouteOwner.jsx";
 import Home from "./page/home";
 import PostResForm from "./components/postResForm/postResForm.jsx";
 import PostDetail from "./components/postForm/postDetail";
+import FollowedPost from "./page/followedPost.jsx";
 import ManagePost from "./page/managePost";
 import ManageRoom from "./page/manageRoom";
 import Login from "./page/login";
@@ -39,6 +40,10 @@ class App extends Component {
               path="/create-post"
               component={PostResForm}
             ></ProtectedRouteOwner>
+            <ProtectedRoute
+              path="/followed"
+              component={FollowedPost}
+            ></ProtectedRoute>
             <ProtectedRoute
               path="/posts/:id"
               component={PostDetail}

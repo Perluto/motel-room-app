@@ -9,7 +9,7 @@ class Navbar extends Component {
         { label: "Trang chủ", link: "/home", className: "nav-item nav-link" },
         {
           label: "Danh sách yêu thích",
-          link: "/manage-post",
+          link: "/followed",
           className: "nav-item nav-link",
         },
       ],

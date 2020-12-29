@@ -42,9 +42,6 @@ class Home extends Component {
             <Search></Search>
           </div>
           <div className="w-75 ml-1 mr-1 border border-light rounded bg-white shadow">
-            <h4 className="ml-5 mt-5">
-              <strong className="text-danger">Trending</strong>
-            </h4>
             <div className="jumbotron bg-white">
               <div className="row">
                 {data.map((e) => {

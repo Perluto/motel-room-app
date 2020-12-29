@@ -25,7 +25,7 @@ class postShortcut extends Component {
             >
               {data.postName}
             </Link>
-            <strong>{data.price} triệu/tháng</strong>
+            <strong>{data.price}.000 đ/tháng</strong>
             <p>{data.area} m²</p>
             <p>{data.isHire}</p>
           </div>
