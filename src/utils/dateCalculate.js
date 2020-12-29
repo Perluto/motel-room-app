@@ -1,5 +1,5 @@
-export function dateCalculate(duration, period) {
-  const currentDate = new Date(Date.now());
+export function dateCalculate(now, duration, period) {
+  const currentDate = new Date(now);
   let result = currentDate;
 
   if (period === "week") {

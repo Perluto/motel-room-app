@@ -15,12 +15,16 @@ function addUser(data) {
   return http.post(apiEndpoint, data);
 }
 
-function confirmOwner(id, status) {
-  return http.put(apiEndpoint + `/${id}/status`, status);
+function confirmOwner(id) {
+  return http.put(apiEndpoint + `/${id}/status`);
 }
 
 function changePassword(id, password) {
   return http.put(apiEndpoint + `/${id}/change-password`, password);
+}
+
+function changProfile(id, data) {
+  return http.put(apiEndpoint + `/owner/${id}/profile`, { data });
 }
 
 export default {
@@ -29,4 +33,5 @@ export default {
   addUser,
   confirmOwner,
   changePassword,
+  changProfile,
 };

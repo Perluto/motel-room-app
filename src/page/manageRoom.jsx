@@ -73,12 +73,6 @@ class ManagePost extends Component {
             data={this.state.data}
             handleClick={this.update}
           ></Table>
-          <Pagination
-            itemTotal={this.state.data.length}
-            pageSize={2}
-            currentPage={1}
-            onPageChange={this.handlePageChange}
-          ></Pagination>
         </div>
       </div>
     );

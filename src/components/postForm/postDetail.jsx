@@ -22,6 +22,8 @@ class PostDetail extends Component {
     address: "",
     facilities: {},
     owner: {},
+    liked: false,
+    followed: false,
   };
 
   componentDidMount() {
@@ -42,6 +44,7 @@ class PostDetail extends Component {
         ]);
 
         let post = lodash.pick(res.data, [
+          "_id",
           "idUserRef",
           "isConfirm",
           "view",
@@ -72,10 +75,32 @@ class PostDetail extends Component {
         this.setState({ address });
         this.setState({ owner });
       });
+
+    postService.view(id).then((res) => {});
+
+    postService.getCmt(id).then((res) => {
+      this.setState({ comment: res.data });
+    });
+    const user = authService.getCurrentUser();
+    postService.getLike(id, user._id).then((res) => {
+      this.setState({ liked: res.data });
+    });
+
+    postService.getFollow(id, user._id).then((res) => {
+      this.setState({ followed: res.data });
+    });
+  }
+
+  async like(idPost, idUser) {
+    await postService.like(idPost, { idUser: idUser });
+  }
+
+  async follow(idPost, idUser) {
+    await postService.follow(idPost, { idUser: idUser });
   }
 
   render() {
-    const { address, room, owner, facilities, post } = this.state;
+    const { address, room, owner, facilities, post, comment } = this.state;
     const userCurr = authService.getCurrentUser();
     return (
       <div className="container">
@@ -91,6 +116,8 @@ class PostDetail extends Component {
           id="common"
           className="w-100 mt-5 mb-5 bg-white p-4 border rounded d-flex flex-column"
         >
+          <h3>{post.postName}</h3>
+          <br />
           <table className="table table-bordered w-100 p-4">
             <tbody>
               <tr>
@@ -126,8 +153,20 @@ class PostDetail extends Component {
             </tbody>
           </table>
           <div className="d-flex block">
-            <Reaction className="fa-thumbs-up fa-lg text-primary rounded mr-5 p-3 btn-light"></Reaction>
-            <Reaction className="fa-heart fa-lg text-danger rounded mr-5 p-3 btn-light"></Reaction>
+            <Reaction
+              className="fa-thumbs-up fa-lg text-primary rounded mr-5 p-3 btn-light"
+              liked={this.state.liked}
+              idPost={post._id}
+              idUser={userCurr._id}
+              handleLike={this.like}
+            ></Reaction>
+            <Reaction
+              className="fa-heart fa-lg text-danger rounded mr-5 p-3 btn-light"
+              liked={this.state.followed}
+              idPost={post._id}
+              idUser={userCurr._id}
+              handleLike={this.follow}
+            ></Reaction>
             <Report></Report>
           </div>
         </div>
@@ -139,7 +178,7 @@ class PostDetail extends Component {
           <Slide images={room.image}></Slide>
         </div>
         <div className="bg-white border rounded p-2 w-75 mb-5">
-          <PostComment></PostComment>
+          <PostComment idPost={post._id} data={comment}></PostComment>
         </div>
         <div className="w-100 p-1"></div>
       </div>

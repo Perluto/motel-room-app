@@ -3,7 +3,6 @@ import Form from "../common/form/form";
 import { Redirect } from "react-router-dom";
 import InfoOwner from "./infoOwner";
 import { changeImgToBase64 } from "../../utils/changeImageToBase64";
-import Joi from "joi-browser";
 
 import {
   schemaPostForm,
@@ -13,11 +12,13 @@ import {
   period,
 } from "./schemaPostForm";
 
+import userService from "../../service/userService";
 import addressService from "../../service/addressService";
 import roomService from "../../service/roomService";
 import postService from "../../service/postService";
 import auth from "../../service/authService";
 
+import lodash from "lodash";
 import { changeNameProps } from "../../utils/changeNameProps";
 import { dateCalculate, formatDate } from "../../utils/dateCalculate";
 
@@ -50,7 +51,8 @@ class PostForm extends Form {
       duration: null,
       period: "",
     },
-
+    disabled: true,
+    infoOwner: "",
     user: null,
     roomType: [],
     bathroom: [],
@@ -112,7 +114,9 @@ class PostForm extends Form {
           idRoomRef: res.data,
           postName: data.postName,
           postedDate: formatDate(Date.now()),
-          dueDate: formatDate(dateCalculate(data.duration, data.period)),
+          dueDate: formatDate(
+            dateCalculate(Date.now(), data.duration, data.period)
+          ),
         };
         return postService.addPost(post);
       })
@@ -132,6 +136,7 @@ class PostForm extends Form {
       kitchen: kitchen,
       defaultData: defaultData,
       period: period,
+      disabled: !auth.getCurrentUser().isConfirm,
     });
 
     addressService.getCity().then((res) => {
@@ -144,6 +149,11 @@ class PostForm extends Form {
       let roomType = changeNameProps(res.data, "_id", "value");
       roomType = changeNameProps(roomType, "name", "label");
       this.setState({ roomType });
+    });
+
+    userService.getOwnerById(auth.getCurrentUser()._id).then((res) => {
+      const infoOwner = lodash.pick(res.data, ["name", "phone"]);
+      this.setState({ infoOwner });
     });
   }
 
@@ -167,6 +177,7 @@ class PostForm extends Form {
   }
 
   render() {
+    const { disabled } = this.state;
     return (
       <div className="container pt-5">
         <div className="border border-info rounded p-4 bg-white shadow">
@@ -176,30 +187,38 @@ class PostForm extends Form {
               {this.renderSelect(
                 "idCityRef",
                 "Thành phố/Tỉnh",
-                this.state.city
+                this.state.city,
+                disabled
               )}
             </div>
             <div className="form-group col-md-3">
               {this.renderSelect(
                 "idDistrictRef",
                 "Quận/Huyện",
-                this.state.district
+                this.state.district,
+                disabled
               )}
             </div>
             <div className="form-group col-md-3">
-              {this.renderSelect("idWardRef", "Phường/Xã", this.state.ward)}
+              {this.renderSelect(
+                "idWardRef",
+                "Phường/Xã",
+                this.state.ward,
+                disabled
+              )}
             </div>
             <div className="form-group col-md-3">
-              {this.renderInput("street", "Đường", "text")}
+              {this.renderInput("street", "Đường", "text", disabled)}
             </div>
             <div className="form-group col-md-2">
-              {this.renderInput("number", "Số nhà", "text")}
+              {this.renderInput("number", "Số nhà", "text", disabled)}
             </div>
             <div className="form-group col-md-7">
               {this.renderInput(
                 "relatedArea",
                 "Gần những đia điểm công cộng",
-                "text"
+                "text",
+                disabled
               )}
             </div>
             <div className="form-group col-md-3"></div>
@@ -207,60 +226,79 @@ class PostForm extends Form {
               {this.renderSelect(
                 "idRoomTypeRef",
                 "Loại phòng",
-                this.state.roomType
+                this.state.roomType,
+                disabled
               )}
             </div>
             <div className="form-group col-md-3">
               {this.renderSelect(
                 "isWithOwner",
                 "Chung chủ",
-                this.state.defaultData
+                this.state.defaultData,
+                disabled
               )}
             </div>
             <div className="form-group col-md-1">
-              {this.renderInput("roomNumber", "Số phòng", "text")}
+              {this.renderInput("roomNumber", "Số phòng", "text", disabled)}
             </div>
             <div className="form-group col-md-2">
-              {this.renderInput("area", "Diện tích (m2)", "number")}
+              {this.renderInput("area", "Diện tích (m2)", "number", disabled)}
             </div>
             <div className="form-group col-md-2">
-              {this.renderInput("price", "Giá cả (nghìn đồng)", "number")}
+              {this.renderInput(
+                "price",
+                "Giá thuê (nghìn đồng)",
+                "number",
+                disabled
+              )}
             </div>
           </div>
           <h6 className="card-title text-info">Điều kiện cơ sở vật chất</h6>
           <div className="form-row ml-1">
             <div className="form-group col-md-4">
-              {this.renderSelect("bathroom", "Phòng tắm", this.state.bathroom)}
+              {this.renderSelect(
+                "bathroom",
+                "Phòng tắm",
+                this.state.bathroom,
+                disabled
+              )}
             </div>
             <div className="form-group col-md-4">
-              {this.renderSelect("kitchen", "Phòng bếp", this.state.kitchen)}
+              {this.renderSelect(
+                "kitchen",
+                "Phòng bếp",
+                this.state.kitchen,
+                disabled
+              )}
             </div>
             <div className="form-group col-md-4"></div>
             <div className="form-group col-md-3">
               {this.renderInput(
                 "electricityPrice",
                 "Giá điện (nghìn đồng kW/h)",
-                "number"
+                "number",
+                disabled
               )}
             </div>
             <div className="form-group col-md-3">
               {this.renderInput(
                 "waterPrice",
                 "Giá nước (nghìn đồng/m3)",
-                "number"
+                "number",
+                disabled
               )}
             </div>
             <div className="form-group col-md-12">
-              {this.renderRadio("waterHeater", "Bình nóng lạnh")}
+              {this.renderRadio("waterHeater", "Bình nóng lạnh", disabled)}
             </div>
             <div className="form-group col-md-12">
-              {this.renderRadio("airCondition", "Điều hòa")}
+              {this.renderRadio("airCondition", "Điều hòa", disabled)}
             </div>
             <div className="form-group col-md-12">
-              {this.renderRadio("balcony", "Ban công")}
+              {this.renderRadio("balcony", "Ban công", disabled)}
             </div>
             <div className="form-group col-md-12">
-              {this.renderInput("other", "Tiện ích khác", "text")}
+              {this.renderInput("other", "Tiện ích khác", "text", disabled)}
             </div>
           </div>
           <h6 className="card-title text-info">Hình ảnh</h6>
@@ -272,19 +310,24 @@ class PostForm extends Form {
           <h5 className="card-title text-info">Thông tin bài đăng</h5>
           <div className="form-row ml-1">
             <div className="form-group col-md-6">
-              {this.renderInput("postName", "Tên bài đăng", "text")}
+              {this.renderInput("postName", "Tên bài đăng", "text", disabled)}
             </div>
             <div className="form-group col-md-6"></div>
             <div className="form-group col-md-2">
-              {this.renderInput("duration", "Thời hạn", "number")}
+              {this.renderInput("duration", "Thời hạn", "number", disabled)}
             </div>
             <div className="form-group col-md-4">
-              {this.renderSelect("period", "Chu kỳ", this.state.period)}
+              {this.renderSelect(
+                "period",
+                "Chu kỳ",
+                this.state.period,
+                disabled
+              )}
             </div>
           </div>
         </div>
-        <InfoOwner data={this.state.user}></InfoOwner>
-        {this.renderBtn("Dang Tin")}
+        <InfoOwner data={this.state.infoOwner}></InfoOwner>
+        {this.renderBtn("Đăng bài")}
       </div>
     );
   }

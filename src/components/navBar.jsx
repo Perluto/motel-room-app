@@ -53,7 +53,6 @@ class Navbar extends Component {
     data: [],
     userDropdown: [
       { path: "/profile", className: "", label: "Profile" },
-      { path: "/change-password", className: "", label: "Change Password" },
       { path: "/logout", className: "", label: "Logout" },
     ],
   };

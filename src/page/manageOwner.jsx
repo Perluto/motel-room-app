@@ -4,12 +4,12 @@ import Pagination from "../components/common/pagination";
 import lodash from "lodash";
 import { formatDate } from "../utils/dateCalculate";
 
-import postService from "../service/postService";
+import userService from "../service/userService";
 
 class ManageOwner extends Component {
   state = {
     column: [
-      { label: "username", key: "username" },
+      { label: "Tài khoản", key: "username" },
       { label: "Trạng thái", key: "status" },
       { label: "Duyệt", key: "btn confirm" },
     ],
@@ -18,36 +18,27 @@ class ManageOwner extends Component {
   };
 
   componentDidMount() {
-    postService.getAll().then((res) => {
-      let data = [];
+    userService.getAllOwner().then((res) => {
+      const owner = [];
       res.data.forEach((e) => {
-        const tmp = lodash.pick(e, [
-          "_id",
-          "postName",
-          "postedDate",
-          "dueDate",
-          "isConfirm",
-        ]);
-
-        tmp.postedDate = formatDate(tmp.postedDate);
-        tmp.dueDate = formatDate(tmp.dueDate);
+        let tmp = lodash.pick(e, ["_id", "username", "isConfirm"]);
         tmp.status = tmp.isConfirm ? "Đã xác nhận" : "Chưa xác nhận";
-
-        data.push(tmp);
+        owner.push(tmp);
       });
-
-      this.setState({ data });
+      this.setState({ data: owner });
     });
   }
 
   confirm(data) {
-    postService
-      .updateStatusPost(data._id, { isConfirm: true })
+    userService
+      .confirmOwner(data._id)
       .then((res) => {
-        console.log(res);
+        alert("Done");
+        window.location = "/manage-owner";
       })
       .catch((err) => {
-        console.log(err);
+        alert("Error");
+        window.location = "/manage-owner";
       });
   }
 
@@ -65,12 +56,6 @@ class ManageOwner extends Component {
             data={this.state.data}
             handleClick={this.confirm}
           ></Table>
-          <Pagination
-            itemTotal={this.state.data.length}
-            pageSize={2}
-            currentPage={this.state.currentPage}
-            onPageChange={this.handlePageChange}
-          ></Pagination>
         </div>
       </div>
     );

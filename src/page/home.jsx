@@ -51,12 +51,6 @@ class Home extends Component {
                   return <PostShortcut data={e}></PostShortcut>;
                 })}
               </div>
-              <Pagination
-                itemTotal={data.length}
-                pageSize={2}
-                currentPage={this.state.currentPage}
-                onPageChange={this.handlePageChange}
-              ></Pagination>
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import Extend from "./extend";
 import { formatDate } from "../../utils/dateCalculate";
 
 const PostStatus = ({ data }) => {
@@ -21,7 +22,7 @@ const PostStatus = ({ data }) => {
         <div className="mb-1">Ngày đăng: {formatDate(data.postedDate)}.</div>
         <div className="mb-1">Ngày hết hạn: {formatDate(data.dueDate)}.</div>
         <div className=" d-flex justify-content-between">
-          <button className="btn btn-outline-primary">Gia han</button>
+          <Extend id={data._id} dueDate={data.dueDate}></Extend>
         </div>
       </div>
     </React.Fragment>
